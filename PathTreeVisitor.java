@@ -3,21 +3,15 @@ import java.util.HashMap;
 
 public class PathTreeVisitor extends PathyBaseVisitor<Void>
 {
-	Hashmap<String, Node> nodeDict;
-	Hashmap<String, Link> linkDict;
-	Hashmap<String, Junction> junctionDict;
-	Hashmap<String, Entity> entityDict;
-	Hashmap<String, Action> actionDict;
+	boolean debug;
+	HashMap<String, PathyObject> worldDict;
 	Deque<StackElement> stack;
 
-	public PathTreeVisitor(Hashmap<String, Node> _nd, Hashmap<String, Link> _ld, Hashmap<String, Junction> _jd, Hashmap<String, Entity> _ed, Hashmap<String, Action> _ad)
+	public PathTreeVisitor(HashMap<String, PathyObject> _wd)
 	{
 		super();
-		nodeDict = _nd;
-		linkDict = _ld;
-		junctionDict = _jd;
-		entityDict = _ed;
-		actionDict = _ad;
+		worldDict = _wd;
+		debug = true;
 	}
 //declaration statements
 	public Void visitSimpleDec(PathyParser.SimpleDecContext ctx)
@@ -26,55 +20,60 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		//Check if ID exists
 		switch(ctx.op.getType()) {
 		case PathyParser.NODE:
-			Node newNode = new Node();
-			nodeDict.put(id, newNode);
+			Node newNode = new Node(id);
+			worldDict.put(id, newNode);
 			break;
 		case PathyParser.JUNCT:
-			Node newJunct = new Junction();
-			junctionDict.put(id, newJunct);
+			Junction newJunct = new Junction(id);
+			worldDict.put(id, newJunct);
 			break;
 		case PathyParser.ACT:
-			Node newAct = new Action();
-			actionDict.put(id, newAct);
+			Action newAct = new Action(id);
+			worldDict.put(id, newAct);
 			break;
 		}
-
-		System.out.println(id);
 		
+		if (debug)
+		{
+			System.out.println(id);
+			System.out.println(worldDict.get(id).toString());
+			System.out.println();
+			System.out.println(worldDict);
+		}
 		return null;
 	}
 
-	public Void visitEntDec()
+	public Void visitEntDec(PathyParser.EntDecContext ctx)
 	{
 		return null;
 		
 	}
 
-	public Void visitLinkDecDef()
+	public Void visitLinkDecDef(PathyParser.LinkDecDefContext ctx)
 	{
 		return null;
 		
 	}
 
-	public Void visitLinkDecWeight()
+	public Void visitLinkDecWeight(PathyParser.LinkDecWeightContext ctx)
 	{
 		return null;
 		
 	}
 
-	public Void visitLinkDecBoth()
+	public Void visitLinkDecBoth(PathyParser.LinkDecBothContext ctx)
 	{
 		return null;
 		
 	}
 
-	public Void visitAssignAct()
+	public Void visitAssignAct(PathyParser.AssignActContext ctx)
 	{
 		return null;
 		
 	}
 
-	public Void visitDelItem()
+	public Void visitDelItem(PathyParser.DelItemContext ctx)
 	{
 		return null;
 		

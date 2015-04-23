@@ -1,11 +1,7 @@
-public class Node
+public class Node extends PathyObject
 {
-	public Node()
+	public Node(String _id)
 	{
-	}
-	
-	public String toSting()
-	{
-		return "Node";
+		super(_id, PathyObject.NODE);
 	}
 }

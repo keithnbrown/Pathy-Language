@@ -24,14 +24,11 @@ public class Pathy {
         ParseTree tree = parser.r();
         System.out.println(tree.toStringTree(parser));
 
-	Hashmap<String, Node> nodeDict = new Hashmap<String, Node>();
-	Hashmap<String, Link> linkDict = new Hashmap<String, Link>();
-	Hashmap<String, Junction> junctionDict = new Hashmap<String, Junction>();
-	Hashmap<String, Entity> entityDict = new Hashmap<String, Entity>();
-	Hashmap<String, Action> actionDict = new Hashmap<String, Action>();
+	HashMap<String, PathyObject> worldDict = new HashMap<String, PathyObject>();
 	Deque<StackElement> stack;
 
-	PathTreeVisitor eval = new PathTreeVisitor();
-	System.out.println(eval.visit(tree));
+	PathTreeVisitor eval = new PathTreeVisitor(worldDict);
+	//System.out.println(eval.visit(tree));
+	eval.visit(tree);
     }
 }

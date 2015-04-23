@@ -1,11 +1,7 @@
-public class Entity
+public class Entity extends PathyObject
 {
-	public Entity()
+	public Entity(String _id)
 	{
-	}
-	
-	public String toSting()
-	{
-		return "Entity";
+		super(_id, PathyObject.ENTITY);
 	}
 }

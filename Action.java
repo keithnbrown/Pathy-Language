@@ -1,11 +1,7 @@
-public class Action
+public class Action extends PathyObject
 {
-	public Action()
+	public Action(String _id)
 	{
-	}
-	
-	public String toSting()
-	{
-		return "Action";
+		super(_id, PathyObject.ACTION);
 	}
 }

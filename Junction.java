@@ -1,11 +1,7 @@
-public class Junction
+public class Junction extends PathyObject
 {
-	public Junction()
+	public Junction(String _id)
 	{
-	}
-	
-	public String toSting()
-	{
-		return "Junction";
+		super(_id, PathyObject.JUNCT);
 	}
 }
