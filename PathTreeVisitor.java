@@ -59,19 +59,19 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 				worldDict.put(id, newAct);
 				break;
 			}
-		
-			if (debug)
-			{
-				System.out.println(id);
-				System.out.println(worldDict.get(id).toString());
-				System.out.println();
-				System.out.println(worldDict);
-			}
 		}
 		else
 		{
 			//user tried to reuse a name
-			throw new IllegalStateException("\"" + id + "\" has already been used as an identifier."); 
+			throw new IllegalStateException("ERROR: \"" + id + "\" has already been used as an identifier."); 
+		}
+		
+		if (debug)
+		{
+			System.out.println(id);
+			System.out.println(worldDict.get(id).toString());
+			System.out.println();
+			System.out.println(worldDict);
 		}
 		return null;
 	}
@@ -96,18 +96,26 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 				}
 				else
 				{
-					throw new RuntimeException("Error retrieving Node \"" + nodeid + "\".");
+					throw new RuntimeException("ERROR: Unable to retrieve Node \"" + nodeid + "\".");
 				}
 			}
 			else
 			{
-				throw new RuntimeException("\"" + nodeid + "\" is not an valid identifier for an existing Node. PARAM 0.");
+				throw new RuntimeException("ERROR: \"" + nodeid + "\" is not an valid identifier for an existing Node. PARAM 0.");
 			}
 		}
 		else
 		{
 			//user tried to reuse a name
-			throw new IllegalStateException("\"" + id + "\" has already been used as an identifier."); 
+			throw new IllegalStateException("ERROR: \"" + id + "\" has already been used as an identifier."); 
+		}
+		
+		if (debug)
+		{
+			System.out.println(id);
+			System.out.println(worldDict.get(id).toString());
+			System.out.println();
+			System.out.println(worldDict);
 		}
 		return null;
 	}	
@@ -132,18 +140,26 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 				}
 				else
 				{
-					throw new RuntimeException("Error retrieving Node \"" + nodeid + "\".");
+					throw new RuntimeException("ERROR: Unable to retrieve Node \"" + nodeid + "\".");
 				}
 			}
 			else
 			{
-				throw new RuntimeException("\"" + nodeid + "\" is not an valid identifier for an existing Node. PARAM 0.");
+				throw new RuntimeException("ERROR: \"" + nodeid + "\" is not an valid identifier for an existing Node. PARAM 0.");
 			}
 		}
 		else
 		{
 			//user tried to reuse a name
-			throw new IllegalStateException("\"" + id + "\" has already been used as an identifier."); 
+			throw new IllegalStateException("ERROR: \"" + id + "\" has already been used as an identifier."); 
+		}
+		
+		if (debug)
+		{
+			System.out.println(id);
+			System.out.println(worldDict.get(id).toString());
+			System.out.println();
+			System.out.println(worldDict);
 		}
 		return null;
 	}
@@ -152,44 +168,185 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 	{
 		String id = ctx.idpar(0).getText();
 		String aid = ctx.idpar(1).getText();
-		String bid = ctx.idpar(1).getText();
+		String bid = ctx.idpar(2).getText();
 		if (!worldDict.containsKey(id))
 		{
 			PathyObject tempA;
 			PathyObject tempB;
 			//check if the parameters provided exist and are a nodes or junctions
+			//there are a few checks due to Links taking different types for the same parameter signature
+			if (!checkItemNode(aid) && !checkItemJunction(aid)
+			&& !checkItemNode(bid) && !checkItemJunction(bid))
+			{
+				//Both parameters are invalid
+				String throwline = "ERROR: \"" + aid + "\" is not an valid identifier for an existing Node or Junction. PARAM 0.";
+				throwline = throwline + System.lineSeparator() + "ERROR: \"" + bid + "\" is not an valid identifier for an existing Node or Junction. PARAM 1.";
+				throw new RuntimeException(throwline);				
+			}
 			if ((checkItemNode(aid) || checkItemJunction(aid)))
 			{
+				//parameter 0 is valid
 				tempA = worldDict.get(aid);
 			}
 			else
 			{
-				throw new RuntimeException("\"" + aid + "\" is not an valid identifier for an existing Node or Junction. PARAM 0.");
+				//parameter 0 is invalid
+				throw new RuntimeException("ERROR: \"" + aid + "\" is not an valid identifier for an existing Node or Junction. PARAM 0.");
 			}
 			
 			if ((checkItemNode(bid) || checkItemJunction(bid)))
 			{
+				//parameter 1 is valid
 				tempB = worldDict.get(bid);
 			}
 			else
 			{
-				throw new RuntimeException("\"" + bid + "\" is not an valid identifier for an existing Node or Junction. PARAM 1.");
+				//parameter 1 is invalid
+				throw new RuntimeException("ERROR: \"" + bid + "\" is not an valid identifier for an existing Node or Junction. PARAM 1.");
 			}
-			
-			
-			
+			Link newLink;
+			Node nodeA;
+			Node nodeB;
+			Junction junctA;
+			Junction junctB;
+			if (tempA instanceof Node && tempB instanceof Node)
+			{
+				nodeA = (Node)tempA;
+				nodeB = (Node)tempB;
+				newLink = new Link(id, nodeA, nodeB);
+			}
+			else if (tempA instanceof Node && tempB instanceof Junction)
+			{
+				nodeA = (Node)tempA;
+				junctB = (Junction)tempB;
+				newLink = new Link(id, nodeA, junctB);				
+			}			
+			else if (tempA instanceof Junction && tempB instanceof Node)
+			{
+				junctA = (Junction)tempA;
+				nodeB = (Node)tempB;	
+				newLink = new Link(id, junctA, nodeB);			
+			}
+			else if (tempA instanceof Junction && tempB instanceof Junction)
+			{
+				junctA = (Junction)tempA;
+				junctB = (Junction)tempB;
+				newLink = new Link(id, junctA, junctB);						
+			}
+			else
+			{
+				throw new RuntimeException("ERROR: Endpoint error constructing \"" + id + "\".");
+			}
+			worldDict.put(id, newLink);
 			
 		}
 		else
 		{
 			//user tried to reuse a name
-			throw new IllegalStateException("\"" + id + "\" has already been used as an identifier."); 
+			throw new IllegalStateException("ERROR: \"" + id + "\" has already been used as an identifier."); 
+		}
+		
+		if (debug)
+		{
+			System.out.println(id);
+			System.out.println(worldDict.get(id).toString());
+			System.out.println();
+			System.out.println(worldDict);
 		}
 		return null;
 	}
 
 	public Void visitLinkDecWeight(PathyParser.LinkDecWeightContext ctx)
 	{
+		String id = ctx.idpar(0).getText();
+		String aid = ctx.idpar(1).getText();
+		String bid = ctx.idpar(2).getText();
+		int weight = Integer.parseInt(ctx.intpar().getText());
+		if (!worldDict.containsKey(id))
+		{
+			PathyObject tempA;
+			PathyObject tempB;
+			//check if the parameters provided exist and are a nodes or junctions
+			//there are a few checks due to Links taking different types for the same parameter signature
+			if (!checkItemNode(aid) && !checkItemJunction(aid)
+			&& !checkItemNode(bid) && !checkItemJunction(bid))
+			{
+				//Both parameters are invalid
+				String throwline = "ERROR: \"" + aid + "\" is not an valid identifier for an existing Node or Junction. PARAM 0.";
+				throwline = throwline + System.lineSeparator() + "ERROR: \"" + bid + "\" is not an valid identifier for an existing Node or Junction. PARAM 1.";
+				throw new RuntimeException(throwline);				
+			}
+			if ((checkItemNode(aid) || checkItemJunction(aid)))
+			{
+				//parameter 0 is valid
+				tempA = worldDict.get(aid);
+			}
+			else
+			{
+				//parameter 0 is invalid
+				throw new RuntimeException("ERROR: \"" + aid + "\" is not an valid identifier for an existing Node or Junction. PARAM 0.");
+			}
+			
+			if ((checkItemNode(bid) || checkItemJunction(bid)))
+			{
+				//parameter 1 is valid
+				tempB = worldDict.get(bid);
+			}
+			else
+			{
+				//parameter 1 is invalid
+				throw new RuntimeException("ERROR: \"" + bid + "\" is not an valid identifier for an existing Node or Junction. PARAM 1.");
+			}
+			Link newLink;
+			Node nodeA;
+			Node nodeB;
+			Junction junctA;
+			Junction junctB;
+			if (tempA instanceof Node && tempB instanceof Node)
+			{
+				nodeA = (Node)tempA;
+				nodeB = (Node)tempB;
+				newLink = new Link(id, nodeA, nodeB, weight);
+			}
+			else if (tempA instanceof Node && tempB instanceof Junction)
+			{
+				nodeA = (Node)tempA;
+				junctB = (Junction)tempB;
+				newLink = new Link(id, nodeA, junctB, weight);
+			}			
+			else if (tempA instanceof Junction && tempB instanceof Node)
+			{
+				junctA = (Junction)tempA;
+				nodeB = (Node)tempB;	
+				newLink = new Link(id, junctA, nodeB, weight);
+			}
+			else if (tempA instanceof Junction && tempB instanceof Junction)
+			{
+				junctA = (Junction)tempA;
+				junctB = (Junction)tempB;
+				newLink = new Link(id, junctA, junctB, weight);	
+			}
+			else
+			{
+				throw new RuntimeException("ERROR: Endpoint error constructing \"" + id + "\".");
+			}
+			
+			worldDict.put(id, newLink);
+			
+		}
+		else
+		{
+			//user tried to reuse a name
+			throw new IllegalStateException("ERROR: \"" + id + "\" has already been used as an identifier."); 
+		}
+		
+		if (debug)
+		{
+			System.out.println(id);
+			System.out.println(worldDict.get(id).toString());
+			System.out.println();
+			System.out.println(worldDict);
+		}
 		return null;
 	}
 
