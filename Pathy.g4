@@ -3,7 +3,8 @@ grammar Pathy;
 r	:	(ds|fs)+ DEND (qs|fs)* ;
 
 ds	:	op=(NODE|JUNCT|ACT) idpar PSTART PEND ';'					#SimpleDec
-	|	ENT idpar PSTART idpar PEND ';'							#EntDec
+	|	ENT idpar PSTART idpar PEND ';'							#EntDecDef
+	|	ENT idpar PSTART idpar ',' intpar PEND ';'					#EntDecEnergy
 	|	LINK idpar PSTART idpar ',' idpar PEND ';'					#LinkDecDef
 	|	LINK idpar PSTART idpar ',' idpar ',' intpar PEND ';'				#LinkDecWeight
 	|	LINK idpar PSTART idpar ',' idpar ',' intpar ',' dirpar PEND ';'		#LinkDecBoth
