@@ -9,27 +9,27 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 	
 	private boolean checkItemNode(String id)
 	{
-		return worldDict.containsKey(id) && worldDict.get(id) instanceof Node;
+		return worldDict.containsKey(id) && worldDict.get(id).getType().equals(PathyObject.NODE);
 	}
 	
 	private boolean checkItemAction(String id)
 	{
-		return worldDict.containsKey(id) && worldDict.get(id) instanceof Action;
+		return worldDict.containsKey(id) && worldDict.get(id).getType().equals(PathyObject.ACTION);
 	}
 	
 	private boolean checkItemJunction(String id)
 	{
-		return worldDict.containsKey(id) && worldDict.get(id) instanceof Junction;
+		return worldDict.containsKey(id) && worldDict.get(id).getType().equals(PathyObject.JUNCT);
 	}
 	
 	private boolean checkItemLink(String id)
 	{
-		return worldDict.containsKey(id) && worldDict.get(id) instanceof Link;
+		return worldDict.containsKey(id) && worldDict.get(id).getType().equals(PathyObject.LINK);
 	}
 	
 	private boolean checkItemEntity(String id)
 	{
-		return worldDict.containsKey(id) && worldDict.get(id) instanceof Entity;
+		return worldDict.containsKey(id) && worldDict.get(id).getType().equals(PathyObject.ENTITY);
 	}
 
 	public PathTreeVisitor(HashMap<String, PathyObject> _wd)
@@ -88,7 +88,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			if (checkItemNode(nodeid))
 			{
 				PathyObject temp = worldDict.get(id);
-				Node param = (temp instanceof Node ? (Node)temp : null);
+				Node param = (temp.type().equals(PathyObject.NODE) ? (Node)temp : null);
 				if (param != null)
 				{
 					Entity newEnt = new Entity(id, param);
@@ -116,7 +116,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			System.out.println(worldDict.get(id).toString());
 			System.out.println();
 			System.out.println(worldDict);
-		}
+		}l
 		return null;
 	}	
 
@@ -132,7 +132,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			if (checkItemNode(nodeid))
 			{
 				PathyObject temp = worldDict.get(nodeid);
-				Node param = (temp instanceof Node ? (Node)temp : null);
+				Node param = (temp.type().equals(PathyObject.NODE) ? (Node)temp : null);
 				if (param != null)
 				{
 					Entity newEnt = new Entity(id, param);
@@ -209,25 +209,25 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			Node nodeB;
 			Junction junctA;
 			Junction junctB;
-			if (tempA instanceof Node && tempB instanceof Node)
+			if (tempA.type().equals(PathyObject.NODE) && tempB.type().equals(PathyObject.NODE))
 			{
 				nodeA = (Node)tempA;
 				nodeB = (Node)tempB;
 				newLink = new Link(id, nodeA, nodeB);
 			}
-			else if (tempA instanceof Node && tempB instanceof Junction)
+			else if (tempA.type().equals(PathyObject.NODE) && tempB.type().equals(PathyObject.JUNCT))
 			{
 				nodeA = (Node)tempA;
 				junctB = (Junction)tempB;
 				newLink = new Link(id, nodeA, junctB);				
 			}			
-			else if (tempA instanceof Junction && tempB instanceof Node)
+			else if (tempA.type().equals(PathyObject.JUNCT) && tempB.type().equals(PathyObject.NODE))
 			{
 				junctA = (Junction)tempA;
 				nodeB = (Node)tempB;	
 				newLink = new Link(id, junctA, nodeB);			
 			}
-			else if (tempA instanceof Junction && tempB instanceof Junction)
+			else if (tempA.type().equals(PathyObject.JUNCT) && tempB.type().equals(PathyObject.JUNCT))
 			{
 				junctA = (Junction)tempA;
 				junctB = (Junction)tempB;
@@ -302,25 +302,25 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			Node nodeB;
 			Junction junctA;
 			Junction junctB;
-			if (tempA instanceof Node && tempB instanceof Node)
+			if (tempA.type().equals(PathyObject.NODE) && tempB.type().equals(PathyObject.NODE))
 			{
 				nodeA = (Node)tempA;
 				nodeB = (Node)tempB;
 				newLink = new Link(id, nodeA, nodeB, weight);
 			}
-			else if (tempA instanceof Node && tempB instanceof Junction)
+			else if (tempA.type().equals(PathyObject.NODE) && tempB.type().equals(PathyObject.JUNCT))
 			{
 				nodeA = (Node)tempA;
 				junctB = (Junction)tempB;
 				newLink = new Link(id, nodeA, junctB, weight);
 			}			
-			else if (tempA instanceof Junction && tempB instanceof Node)
+			else if (tempA.type().equals(PathyObject.JUNCT) && tempB.type().equals(PathyObject.NODE))
 			{
 				junctA = (Junction)tempA;
 				nodeB = (Node)tempB;	
 				newLink = new Link(id, junctA, nodeB, weight);
 			}
-			else if (tempA instanceof Junction && tempB instanceof Junction)
+			else if (tempA.type().equals(PathyObject.JUNCT) && tempB.type().equals(PathyObject.JUNCT))
 			{
 				junctA = (Junction)tempA;
 				junctB = (Junction)tempB;
