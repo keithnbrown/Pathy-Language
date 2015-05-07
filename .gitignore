@@ -1,5 +1,15 @@
 *.class
 
+# pathy specific - antlr auto-generated files
+Pathy.tokens
+PathyBaseListener.java
+PathyBaseVisitor.java
+PathyLexer.java
+PathyLexer.tokens
+PathyListener.java
+PathyParser.java
+PathyVisitor.java
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 

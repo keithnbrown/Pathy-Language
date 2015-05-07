@@ -9,4 +9,4 @@ grammar: Pathy.g4
 .PHONY: clean
 
 clean:
-	rm -f PathyBaseListener.java PathyBaseVisitor.java PathyParser.java PathyVisitor.java PathyLexer.java PathyListener.java Pathy*.tokens *.class *~ demos/*~
+	rm -f PathyBaseListener.java PathyBaseVisitor.java PathyParser.java PathyVisitor.java PathyLexer.java PathyListener.java Pathy*.tokens *.class *~ demos/*~ .gitignore~

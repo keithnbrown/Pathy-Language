@@ -1,12 +1,13 @@
 public class Link extends PathyObject
 {
+	public static enum LinkDir {TWOWAY,ATOB,BTOA,BLOCKED}
 	private PathyObject a;
 	private PathyObject b;
 	private int weight;
 	
 	public Link(String _id, Node _a, Node _b)
 	{
-		super(_id, PathyObject.LINK);
+		super(_id, PathyObject.PathyType.LINK);
 		a = _a;
 		b = _b;
 		weight = 0;
@@ -14,7 +15,7 @@ public class Link extends PathyObject
 	
 	public Link(String _id, Junction _a, Junction _b)
 	{
-		super(_id, PathyObject.LINK);
+		super(_id, PathyObject.PathyType.LINK);
 		a = _a;
 		b = _b;
 		weight = 0;
@@ -22,7 +23,7 @@ public class Link extends PathyObject
 	
 	public Link(String _id, Node _a, Junction _b)
 	{
-		super(_id, PathyObject.LINK);
+		super(_id, PathyObject.PathyType.LINK);
 		a = _a;
 		b = _b;
 		weight = 0;
@@ -30,7 +31,7 @@ public class Link extends PathyObject
 	
 	public Link(String _id, Junction _a, Node _b)
 	{
-		super(_id, PathyObject.LINK);
+		super(_id, PathyObject.PathyType.LINK);
 		a = _a;
 		b = _b;
 		weight = 0;
@@ -38,7 +39,7 @@ public class Link extends PathyObject
 	
 	public Link(String _id, PathyObject _a, PathyObject _b)
 	{
-		super(_id, PathyObject.LINK);
+		super(_id, PathyObject.PathyType.LINK);
 		a = _a;
 		b = _b;
 		weight = 0;
@@ -47,7 +48,7 @@ public class Link extends PathyObject
 	
 	public Link(String _id, Node _a, Node _b, int _w)
 	{
-		super(_id, PathyObject.LINK);
+		super(_id, PathyObject.PathyType.LINK);
 		a = _a;
 		b = _b;
 		weight = _w;
@@ -55,7 +56,7 @@ public class Link extends PathyObject
 	
 	public Link(String _id, Junction _a, Junction _b, int _w)
 	{
-		super(_id, PathyObject.LINK);
+		super(_id, PathyObject.PathyType.LINK);
 		a = _a;
 		b = _b;
 		weight = _w;
@@ -63,7 +64,7 @@ public class Link extends PathyObject
 	
 	public Link(String _id, Node _a, Junction _b, int _w)
 	{
-		super(_id, PathyObject.LINK);
+		super(_id, PathyObject.PathyType.LINK);
 		a = _a;
 		b = _b;
 		weight = _w;
@@ -71,7 +72,7 @@ public class Link extends PathyObject
 	
 	public Link(String _id, Junction _a, Node _b, int _w)
 	{
-		super(_id, PathyObject.LINK);
+		super(_id, PathyObject.PathyType.LINK);
 		a = _a;
 		b = _b;
 		weight = _w;
@@ -79,7 +80,7 @@ public class Link extends PathyObject
 	
 	public Link(String _id, PathyObject _a, PathyObject _b, int _w)
 	{
-		super(_id, PathyObject.LINK);
+		super(_id, PathyObject.PathyType.LINK);
 		String throwline = "";
 		if (!(_a instanceof Node || _a instanceof Junction))
 		{

@@ -9,27 +9,27 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 	
 	private boolean checkItemNode(String id)
 	{
-		return worldDict.containsKey(id) && worldDict.get(id).getType().equals(PathyObject.NODE);
+		return worldDict.containsKey(id) && worldDict.get(id).getType() == PathyObject.PathyType.NODE;
 	}
 	
 	private boolean checkItemAction(String id)
 	{
-		return worldDict.containsKey(id) && worldDict.get(id).getType().equals(PathyObject.ACTION);
+		return worldDict.containsKey(id) && worldDict.get(id).getType() == PathyObject.PathyType.ACTION;
 	}
 	
 	private boolean checkItemJunction(String id)
 	{
-		return worldDict.containsKey(id) && worldDict.get(id).getType().equals(PathyObject.JUNCT);
+		return worldDict.containsKey(id) && worldDict.get(id).getType() == PathyObject.PathyType.JUNCT;
 	}
 	
 	private boolean checkItemLink(String id)
 	{
-		return worldDict.containsKey(id) && worldDict.get(id).getType().equals(PathyObject.LINK);
+		return worldDict.containsKey(id) && worldDict.get(id).getType() == PathyObject.PathyType.LINK;
 	}
 	
 	private boolean checkItemEntity(String id)
 	{
-		return worldDict.containsKey(id) && worldDict.get(id).getType().equals(PathyObject.ENTITY);
+		return worldDict.containsKey(id) && worldDict.get(id).getType() == PathyObject.PathyType.ENTITY;
 	}
 
 	public PathTreeVisitor(HashMap<String, PathyObject> _wd)
@@ -88,7 +88,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			if (checkItemNode(nodeid))
 			{
 				PathyObject temp = worldDict.get(id);
-				Node param = (temp.type().equals(PathyObject.NODE) ? (Node)temp : null);
+				Node param = (temp.getType() == PathyObject.PathyType.NODE ? (Node)temp : null);
 				if (param != null)
 				{
 					Entity newEnt = new Entity(id, param);
@@ -116,7 +116,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			System.out.println(worldDict.get(id).toString());
 			System.out.println();
 			System.out.println(worldDict);
-		}l
+		}
 		return null;
 	}	
 
@@ -132,7 +132,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			if (checkItemNode(nodeid))
 			{
 				PathyObject temp = worldDict.get(nodeid);
-				Node param = (temp.type().equals(PathyObject.NODE) ? (Node)temp : null);
+				Node param = (temp.getType() == PathyObject.PathyType.NODE ? (Node)temp : null);
 				if (param != null)
 				{
 					Entity newEnt = new Entity(id, param);
@@ -209,25 +209,25 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			Node nodeB;
 			Junction junctA;
 			Junction junctB;
-			if (tempA.type().equals(PathyObject.NODE) && tempB.type().equals(PathyObject.NODE))
+			if (tempA.getType() == PathyObject.PathyType.NODE && tempB.getType() == PathyObject.PathyType.NODE)
 			{
 				nodeA = (Node)tempA;
 				nodeB = (Node)tempB;
 				newLink = new Link(id, nodeA, nodeB);
 			}
-			else if (tempA.type().equals(PathyObject.NODE) && tempB.type().equals(PathyObject.JUNCT))
+			else if (tempA.getType() == PathyObject.PathyType.NODE && tempB.getType() == PathyObject.PathyType.JUNCT)
 			{
 				nodeA = (Node)tempA;
 				junctB = (Junction)tempB;
 				newLink = new Link(id, nodeA, junctB);				
 			}			
-			else if (tempA.type().equals(PathyObject.JUNCT) && tempB.type().equals(PathyObject.NODE))
+			else if (tempA.getType() == PathyObject.PathyType.JUNCT && tempB.getType() == PathyObject.PathyType.NODE)
 			{
 				junctA = (Junction)tempA;
 				nodeB = (Node)tempB;	
 				newLink = new Link(id, junctA, nodeB);			
 			}
-			else if (tempA.type().equals(PathyObject.JUNCT) && tempB.type().equals(PathyObject.JUNCT))
+			else if (tempA.getType() == PathyObject.PathyType.JUNCT && tempB.getType() == PathyObject.PathyType.JUNCT)
 			{
 				junctA = (Junction)tempA;
 				junctB = (Junction)tempB;
@@ -302,25 +302,25 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			Node nodeB;
 			Junction junctA;
 			Junction junctB;
-			if (tempA.type().equals(PathyObject.NODE) && tempB.type().equals(PathyObject.NODE))
+			if (tempA.getType() == PathyObject.PathyType.NODE && tempB.getType() == PathyObject.PathyType.NODE)
 			{
 				nodeA = (Node)tempA;
 				nodeB = (Node)tempB;
 				newLink = new Link(id, nodeA, nodeB, weight);
 			}
-			else if (tempA.type().equals(PathyObject.NODE) && tempB.type().equals(PathyObject.JUNCT))
+			else if (tempA.getType() == PathyObject.PathyType.NODE && tempB.getType() == PathyObject.PathyType.JUNCT)
 			{
 				nodeA = (Node)tempA;
 				junctB = (Junction)tempB;
 				newLink = new Link(id, nodeA, junctB, weight);
 			}			
-			else if (tempA.type().equals(PathyObject.JUNCT) && tempB.type().equals(PathyObject.NODE))
+			else if (tempA.getType() == PathyObject.PathyType.JUNCT && tempB.getType() == PathyObject.PathyType.NODE)
 			{
 				junctA = (Junction)tempA;
 				nodeB = (Node)tempB;	
 				newLink = new Link(id, junctA, nodeB, weight);
 			}
-			else if (tempA.type().equals(PathyObject.JUNCT) && tempB.type().equals(PathyObject.JUNCT))
+			else if (tempA.getType() == PathyObject.PathyType.JUNCT && tempB.getType() == PathyObject.PathyType.JUNCT)
 			{
 				junctA = (Junction)tempA;
 				junctB = (Junction)tempB;
