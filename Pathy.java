@@ -25,7 +25,7 @@ public class Pathy {
         System.out.println(tree.toStringTree(parser));
 
 	HashMap<String, PathyObject> worldDict = new HashMap<String, PathyObject>();
-	Deque<StackElement> stack;
+	//Deque<StackElement> stack;
 
 	PathTreeVisitor eval = new PathTreeVisitor(worldDict);
 	//System.out.println(eval.visit(tree));

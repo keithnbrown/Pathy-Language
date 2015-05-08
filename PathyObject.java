@@ -3,7 +3,7 @@ public abstract class PathyObject
 	protected String id;
 	protected PathyType type;
 	
-	public static enum PathyType {NODE, JUNCT, ENTITY, LINK, ACTION};
+	//public static enum PathyType {NODE, JUNCT, ENTITY, LINK, ACTION};
 
 
 	public PathyObject(String _id, PathyType link)

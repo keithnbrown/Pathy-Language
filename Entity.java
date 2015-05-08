@@ -5,14 +5,14 @@ public class Entity extends PathyObject
 	
 	public Entity(String _id, Node _s)
 	{
-		super(_id, PathyObject.PathyType.ENTITY);
+		super(_id, PathyType.ENTITY);
 		location = _s;
 		energy = 0;
 	}
 	
 	public Entity(String _id, Node _s, int _e)
 	{
-		super(_id, PathyObject.PathyType.ENTITY);
+		super(_id, PathyType.ENTITY);
 		location = _s;
 		energy = _e;
 	}

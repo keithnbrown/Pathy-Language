@@ -1,0 +1,1 @@
+public enum LinkDir {TWOWAY,ATOB,BTOA,BLOCKED}
