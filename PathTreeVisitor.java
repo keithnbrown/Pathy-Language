@@ -647,27 +647,78 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 	}
 
 //flexi statements
-	public Void visitSetLink2B()
+	public Void visitSetLink2B(PathyParser.SetLink2BContext ctx)
 	{
+		String id = ctx.idpar().getText();
+		if (checkItemLink(id))
+		{
+			Link l = (Link)worldDict.get(id);
+			switch(ctx.op.getType()) {
+			case PathyParser.SL2:
+				l.setDirection(LinkDir.TWOWAY);
+				break;
+			case PathyParser.SLB:
+				l.setDirection(LinkDir.BLOCKED);
+				break;
+			}
+		}
+		else
+		{
+			//parameter 0 is invalid
+			throw new RuntimeException("ERROR: \"" + id + "\" is not an valid identifier for an existing Link. PARAM 0.");
+		}
 		return null;
 	}
 
-	public Void visitSetVals()
+	public Void visitSetVals(PathyParser.SetValsContext ctx)
 	{
+		String id = ctx.idpar().getText();
+		int val = Integer.parseInt(ctx.intpar().getText());
+		//the grammar won't catch negatives but check and fix it if it does happen.
+		if (val < 0)
+		{
+			val = -val;
+		}
+		switch(ctx.op.getType()) {
+		case PathyParser.SE:
+			if (checkItemEntity(id))
+			{
+				Entity e = (Entity)worldDict.get(id);
+				e.setEnergy(val);
+			}
+			else
+			{
+				//parameter 0 is invalid
+				throw new RuntimeException("ERROR: \"" + id + "\" is not an valid identifier for an existing Entity. PARAM 0.");
+			}
+			break;
+		case PathyParser.SW:
+			if (checkItemLink(id))
+			{
+				Link l = (Link)worldDict.get(id);
+				l.setWeight(val);
+			}
+			else
+			{
+				//parameter 0 is invalid
+				throw new RuntimeException("ERROR: \"" + id + "\" is not an valid identifier for an existing Link. PARAM 0.");
+			}
+			break;
+		}
 		return null;
 	}
 	
-	public Void visitMoveEnt()
+	public Void visitMoveEnt(PathyParser.MoveEntContext ctx)
 	{
 		return null;	
 	}
 
-	public Void visitSetLink1W()
+	public Void visitSetLink1W(PathyParser.SetLink1WContext ctx)
 	{
 		return null;
 	}
 
-	public Void visitSetJunctDir()
+	public Void visitSetJunctDir(PathyParser.SetJunctDirContext ctx)
 	{
 		return null;
 	}

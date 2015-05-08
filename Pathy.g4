@@ -12,16 +12,16 @@ ds	:	op=(NODE|JUNCT|ACT) idpar PSTART PEND ';'					#SimpleDec
 	|	'DeleteItem' PSTART idpar PEND ';'								#DelItem
 	;
 
-fs	:	op=(SL2|SLB) PSTART ID PEND ';'					#SetLink2B
-	|	op=(SE|SW) PSTART ID ',' INT PEND ';'				#SetVals
-	|	'MoveEntity' PSTART ID PEND ';'					#MoveEnt
-	|	'SetLinkOneWay' PSTART ID ',' ID ',' ID PEND ';'		#SetLink1W
-	|	'SetJunctDirection' PSTART ID ',' ID ',' ENUMDIR PEND ';'	#SetJunctDir
+fs	:	op=(SL2|SLB) PSTART idpar PEND ';'					#SetLink2B
+	|	op=(SE|SW) PSTART idpar ',' intpar PEND ';'				#SetVals
+	|	'MoveEntity' PSTART idpar PEND ';'					#MoveEnt
+	|	'SetLinkOneWay' PSTART idpar ',' idpar ',' idpar PEND ';'		#SetLink1W
+	|	'SetJunctDirection' PSTART idpar ',' idpar ',' dirpar PEND ';'	#SetJunctDir
 	;
 
 qs	:	op=(FPN|FPL|FPJ|FPA|FPE) PSTART PEND ';'		 	#NoParamQuery
-	|	op=(F1L|F1D|F1W|F1A|F1C|F1I|F1T|F1B) PSTART ID PEND ';'		#OneParamQuery
-	|	op=(F2A|F2B|F2C|F2D|F2E) PSTART ID ',' ID PEND ';'		#TwoParamQuery
+	|	op=(F1L|F1D|F1W|F1A|F1C|F1I|F1T|F1B) PSTART idpar PEND ';'		#OneParamQuery
+	|	op=(F2A|F2B|F2C|F2D|F2E) PSTART idpar ',' idpar PEND ';'		#TwoParamQuery
 	;
 
 idpar	:	ID		#idparam ;
