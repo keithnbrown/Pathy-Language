@@ -2,15 +2,15 @@ import java.util.HashSet;
 
 public class Node extends PathyObject
 {
-	
+
 	HashSet<Action> activities;
-	
+
 	public Node(String _id)
 	{
 		super(_id, PathyType.NODE);
 		activities = new HashSet<Action>();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -47,12 +47,12 @@ public class Node extends PathyObject
 	{
 		return activities.add(a);
 	}
-	
+
 	public boolean removeAction(Action a)
 	{
 		return activities.remove(a);
 	}
-	
+
 	public HashSet<Action> getActivities()
 	{
 		return activities;

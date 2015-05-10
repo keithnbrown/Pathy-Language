@@ -4,7 +4,7 @@ public class Link extends PathyObject
 	private PathyObject b;
 	private int weight;
 	private LinkDir direction;
-	
+
 	private void checkNotNull(PathyObject _a, PathyObject _b)
 	{
 		if (_a == null && _b == null)
@@ -24,7 +24,7 @@ public class Link extends PathyObject
 			throw new RuntimeException("Endpoints must not be identical");
 		}
 	}
-	
+
 	public Link(String _id, Node _a, Node _b)
 	{
 		super(_id, PathyType.LINK);
@@ -34,7 +34,7 @@ public class Link extends PathyObject
 		weight = 0;
 		direction = LinkDir.TWOWAY;
 	}
-	
+
 	public Link(String _id, Junction _a, Junction _b)
 	{
 		super(_id, PathyType.LINK);
@@ -46,7 +46,7 @@ public class Link extends PathyObject
 		weight = 0;
 		direction = LinkDir.TWOWAY;
 	}
-	
+
 	public Link(String _id, Node _a, Junction _b)
 	{
 		super(_id, PathyType.LINK);
@@ -57,7 +57,7 @@ public class Link extends PathyObject
 		weight = 0;
 		direction = LinkDir.TWOWAY;
 	}
-	
+
 	public Link(String _id, Junction _a, Node _b)
 	{
 		super(_id, PathyType.LINK);
@@ -68,7 +68,7 @@ public class Link extends PathyObject
 		weight = 0;
 		direction = LinkDir.TWOWAY;
 	}
-	
+
 	public Link(String _id, PathyObject _a, PathyObject _b)
 	{
 		super(_id, PathyType.LINK);
@@ -96,19 +96,19 @@ public class Link extends PathyObject
 			Junction aJunct = (Junction) _a;
 			aJunct.addConnection(this);
 		}
-		
+
 		if(_b.getType() == PathyType.JUNCT)
 		{
 			Junction bJunct = (Junction) _b;
 			bJunct.addConnection(this);
 		}
-		
+
 		a = _a;
 		b = _b;
 		weight = 0;
 		direction = LinkDir.TWOWAY;
-	}	
-	
+	}
+
 	public Link(String _id, Node _a, Node _b, int _w)
 	{
 		super(_id, PathyType.LINK);
@@ -118,7 +118,7 @@ public class Link extends PathyObject
 		weight = _w;
 		direction = LinkDir.TWOWAY;
 	}
-	
+
 	public Link(String _id, Junction _a, Junction _b, int _w)
 	{
 		super(_id, PathyType.LINK);
@@ -130,7 +130,7 @@ public class Link extends PathyObject
 		weight = _w;
 		direction = LinkDir.TWOWAY;
 	}
-	
+
 	public Link(String _id, Node _a, Junction _b, int _w)
 	{
 		super(_id, PathyType.LINK);
@@ -141,7 +141,7 @@ public class Link extends PathyObject
 		weight = _w;
 		direction = LinkDir.TWOWAY;
 	}
-	
+
 	public Link(String _id, Junction _a, Node _b, int _w)
 	{
 		super(_id, PathyType.LINK);
@@ -152,7 +152,7 @@ public class Link extends PathyObject
 		weight = _w;
 		direction = LinkDir.TWOWAY;
 	}
-	
+
 	public Link(String _id, PathyObject _a, PathyObject _b, int _w)
 	{
 		super(_id, PathyType.LINK);
@@ -180,13 +180,13 @@ public class Link extends PathyObject
 			Junction aJunct = (Junction) _a;
 			aJunct.addConnection(this);
 		}
-		
+
 		if(_b.getType() == PathyType.JUNCT)
 		{
 			Junction bJunct = (Junction) _b;
 			bJunct.addConnection(this);
 		}
-		
+
 		a = _a;
 		b = _b;
 		weight = _w;
@@ -203,7 +203,7 @@ public class Link extends PathyObject
 		weight = _w;
 		direction = _d;
 	}
-	
+
 	public Link(String _id, Junction _a, Junction _b, int _w, LinkDir _d)
 	{
 		super(_id, PathyType.LINK);
@@ -215,7 +215,7 @@ public class Link extends PathyObject
 		weight = _w;
 		direction = _d;
 	}
-	
+
 	public Link(String _id, Node _a, Junction _b, int _w, LinkDir _d)
 	{
 		super(_id, PathyType.LINK);
@@ -226,7 +226,7 @@ public class Link extends PathyObject
 		weight = _w;
 		direction = _d;
 	}
-	
+
 	public Link(String _id, Junction _a, Node _b, int _w, LinkDir _d)
 	{
 		super(_id, PathyType.LINK);
@@ -237,7 +237,7 @@ public class Link extends PathyObject
 		weight = _w;
 		direction = _d;
 	}
-	
+
 	public Link(String _id, PathyObject _a, PathyObject _b, int _w, LinkDir _d)
 	{
 		super(_id, PathyType.LINK);
@@ -265,49 +265,49 @@ public class Link extends PathyObject
 			Junction aJunct = (Junction) _a;
 			aJunct.addConnection(this);
 		}
-		
+
 		if(_b.getType() == PathyType.JUNCT)
 		{
 			Junction bJunct = (Junction) _b;
 			bJunct.addConnection(this);
 		}
-		
+
 		a = _a;
 		b = _b;
 		weight = _w;
 		direction = _d;
 	}
-	
+
 	public PathyObject getA()
 	{
 		return a;
 	}
-	
+
 	public PathyObject getB()
 	{
 		return b;
 	}
-	
+
 	public boolean isEndpoint(PathyObject end)
 	{
 		return end == a || end == b;
 	}
-	
+
 	public void setWeight(int w)
 	{
 		weight = w;
 	}
-	
+
 	public int getWeight()
 	{
 		return weight;
 	}
-	
+
 	public void setDirection(LinkDir d)
 	{
 		direction = d;
 	}
-	
+
 	public LinkDir getDirection()
 	{
 		return direction;
@@ -356,7 +356,7 @@ public class Link extends PathyObject
 			return false;
 		return true;
 	}
-	
+
 	//identical is the same as equals but doesn't check the id, so this is used to compare if two different links do exactly the same things.
 	public boolean identical(Object obj)
 	{

@@ -3,7 +3,7 @@ public class LinkPair {
 
 	private Link a;
 	private Link b;
-	
+
 	public LinkPair(Link _a, Link _b)
 	{
 		if (_a == null && _b == null)
@@ -55,19 +55,19 @@ public class LinkPair {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		
+
 		if (obj == null)
 			return false;
-		
+
 		if (getClass() != obj.getClass())
 			return false;
-		
+
 		LinkPair other = (LinkPair) obj;
-		
+
 		//link pairs equate differently than eclipse expects so i had to alter the auto-gen code.
 		//Link pairs are equal as long as they contain the same Links, no matter the A/B designation. Direction is ignored when testing equality.
 		//it logically works out like this: (A=a && B=b) ^ (A=b && B=a)
-		
+
 		if (a == null || b == null)
 		{
 			//neither can be null

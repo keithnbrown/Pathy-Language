@@ -2,7 +2,7 @@ public abstract class PathyObject
 {
 	protected String id;
 	protected PathyType type;
-	
+
 	//public static enum PathyType {NODE, JUNCT, ENTITY, LINK, ACTION};
 
 
@@ -11,7 +11,7 @@ public abstract class PathyObject
 		id = _id;
 		type = link;
 	}
-		
+
 	public String toString()
 	{
 		return "Type: " + type + " ID: " + id;
@@ -21,7 +21,7 @@ public abstract class PathyObject
 	{
 		return id;
 	}
-	
+
 	public PathyType getType()
 	{
 		return type;

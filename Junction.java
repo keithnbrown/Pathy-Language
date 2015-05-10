@@ -11,7 +11,7 @@ public class Junction extends PathyObject
 
 	private HashSet<Link> connections;
 	private HashMap<LinkPair, LinkDir> internalConnections; 
-	
+
 	private void checkConnections(Link a, Link b) {
 		//if either link doesn't appear to be connected, throw
 		if (!connections.contains(a) && !connections.contains(b))
@@ -27,21 +27,21 @@ public class Junction extends PathyObject
 			throw new RuntimeException("Error: \"" + this.id + "\" is not connected to a Link called \"" + b.id + "\".");
 		}
 	}
-	
+
 	public HashSet<Link> getConnections()
 	{
 		return connections;
 	}
-	
+
 	public boolean addConnection(Link l)
 	{
 		return connections.add(l);
 	}
-	
+
 	public boolean removeConnection(Link l)
 	{
 		boolean ret = connections.remove(l);
-		
+
 		if (ret)
 		{
 			//check if it was involved in any internals
@@ -65,7 +65,7 @@ public class Junction extends PathyObject
 		LinkPair lp = new LinkPair(a,b);
 		//it may seem odd removing then adding but this is done to make sure the new direction is correct as LinkPairs equate either way
 		internalConnections.remove(lp);
-		
+
 		//if the direction is two way, don't add it again, as a route is implicitly two way if it's not in the map
 		if (d != LinkDir.TWOWAY)
 		{
@@ -98,7 +98,7 @@ public class Junction extends PathyObject
 		else if (ilp.getA().equals(a) && ilp.getB().equals(b))
 		{
 			//if A=a and B=b then the links are in the same order so return without changing
-			ret = internalConnections.get(ilp);			
+			ret = internalConnections.get(ilp);
 		}
 		else if (ilp.getA().equals(b) && ilp.getB().equals(a))
 		{
@@ -116,17 +116,17 @@ public class Junction extends PathyObject
 			{
 				//if it's not a->b or b->a then by process of elimination it's blocked and can just be returned;
 				ret = LinkDir.BLOCKED;
-			}				
+			}
 		}
 		else
 		{
 			//Oh dear, we shouldn't really get here. Throw.
 			throw new RuntimeException("CRITICAL: Couldn't work out LinkPair orientation in relation to supplied Links");
 		}
-		
+
 		return ret;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
