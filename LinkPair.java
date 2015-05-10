@@ -26,6 +26,16 @@ public class LinkPair {
 		b = _b;
 	}
 
+	public Link getA()
+	{
+		return a;
+	}
+
+	public Link getB()
+	{
+		return b;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -33,8 +43,8 @@ public class LinkPair {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((a == null) ? 0 : a.hashCode());
-		result = prime * result + ((b == null) ? 0 : b.hashCode());
+		//a and b must be invertible for this to work.
+		result = prime * result + ((a == null) ? 0 : a.hashCode()) + ((b == null) ? 0 : b.hashCode());
 		return result;
 	}
 
@@ -55,7 +65,7 @@ public class LinkPair {
 		LinkPair other = (LinkPair) obj;
 		
 		//link pairs equate differently than eclipse expects so i had to alter the auto-gen code.
-		//Link pairs are equal as long as they contain the same Links, no matter the A/B designation.
+		//Link pairs are equal as long as they contain the same Links, no matter the A/B designation. Direction is ignored when testing equality.
 		//it logically works out like this: (A=a && B=b) ^ (A=b && B=a)
 		
 		if (a == null || b == null)
@@ -67,5 +77,4 @@ public class LinkPair {
 			return false;
 		return true;
 	}
-
 }
