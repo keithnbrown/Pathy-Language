@@ -115,6 +115,28 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		return set;
 	}
 	
+	private enum ErrorType{IDCONFLICT, IDNOTVALID, ENDPOINTERR}
+
+	private String generateFeedback(ErrorType errtype, String id, String ptype, int par)
+	{
+		String ret = "";
+		
+		switch(errtype)
+		{
+		case IDCONFLICT:
+			ret = "ERROR: \"" + id + "\" has already been used as an identifier.";
+			break;
+		case IDNOTVALID:
+			ret = "ERROR: \"" + id + "\" is not a valid identifier for an existing " + ptype + ". PARAM " + Integer.toString(par) + ".";
+			break;
+		case ENDPOINTERR:
+			ret = "ERROR: Endpoint error constructing \"" + id + "\".";
+			break;
+		}
+		
+		return ret;
+	}	
+	
 	public PathTreeVisitor(HashMap<String, PathyObject> _wd)
 	{
 		super();
@@ -146,7 +168,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		else
 		{
 			//user tried to reuse a name
-			throw new IllegalStateException("ERROR: \"" + id + "\" has already been used as an identifier."); 
+			throw new IllegalStateException(generateFeedback(ErrorType.IDCONFLICT,id, null, 0)); 
 		}
 		
 		if (debug)
@@ -170,27 +192,19 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			//check if the parameter provided exists and is a node
 			if (checkItemNode(nodeid))
 			{
-				PathyObject temp = worldDict.get(id);
-				Node param = (temp.getType() == PathyType.NODE ? (Node)temp : null);
-				if (param != null)
-				{
-					Entity newEnt = new Entity(id, param);
-					worldDict.put(id, newEnt);
-				}
-				else
-				{
-					throw new RuntimeException("ERROR: Unable to retrieve Node \"" + nodeid + "\".");
-				}
+				Node param = (Node)worldDict.get(id);
+				Entity newEnt = new Entity(id, param);
+				worldDict.put(id, newEnt);
 			}
 			else
 			{
-				throw new RuntimeException("ERROR: \"" + nodeid + "\" is not an valid identifier for an existing Node. PARAM 0.");
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, nodeid, "Node", 0));
 			}
 		}
 		else
 		{
 			//user tried to reuse a name
-			throw new IllegalStateException("ERROR: \"" + id + "\" has already been used as an identifier."); 
+			throw new IllegalStateException(generateFeedback(ErrorType.IDCONFLICT,id, null, 0)); 
 		}
 		
 		if (debug)
@@ -214,27 +228,19 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			//check if the parameter provided exists and is a node
 			if (checkItemNode(nodeid))
 			{
-				PathyObject temp = worldDict.get(nodeid);
-				Node param = (temp.getType() == PathyType.NODE ? (Node)temp : null);
-				if (param != null)
-				{
-					Entity newEnt = new Entity(id, param, energy);
-					worldDict.put(id, newEnt);
-				}
-				else
-				{
-					throw new RuntimeException("ERROR: Unable to retrieve Node \"" + nodeid + "\".");
-				}
+				Node param = (Node)worldDict.get(id);
+				Entity newEnt = new Entity(id, param, energy);
+				worldDict.put(id, newEnt);
 			}
 			else
 			{
-				throw new RuntimeException("ERROR: \"" + nodeid + "\" is not an valid identifier for an existing Node. PARAM 0.");
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, nodeid, "Node", 0));
 			}
 		}
 		else
 		{
 			//user tried to reuse a name
-			throw new IllegalStateException("ERROR: \"" + id + "\" has already been used as an identifier."); 
+			throw new IllegalStateException(generateFeedback(ErrorType.IDCONFLICT, id, null, 0)); 
 		}
 		
 		if (debug)
@@ -266,9 +272,8 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			&& !bNodeCheck && !bJunctCheck)
 			{
 				//Both parameters are invalid
-				String throwline = "ERROR: \"" + aid + "\" is not an valid identifier for an existing Node or Junction. PARAM 0.";
-				throwline = throwline + System.lineSeparator() + "ERROR: \"" + bid + "\" is not an valid identifier for an existing Node or Junction. PARAM 1.";
-				throw new RuntimeException(throwline);				
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, aid, "Node or Junction", 0)
+						+ System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, bid, "Node or Junction", 1));				
 			}
 			if ((aNodeCheck || aJunctCheck))
 			{
@@ -278,7 +283,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			else
 			{
 				//parameter 0 is invalid
-				throw new RuntimeException("ERROR: \"" + aid + "\" is not an valid identifier for an existing Node or Junction. PARAM 0.");
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, aid, "Node or Junction", 0));	
 			}
 			
 			if ((bNodeCheck || bJunctCheck))
@@ -289,7 +294,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			else
 			{
 				//parameter 1 is invalid
-				throw new RuntimeException("ERROR: \"" + bid + "\" is not an valid identifier for an existing Node or Junction. PARAM 1.");
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, bid, "Node or Junction", 1));	
 			}
 			Link newLink;
 			Node nodeA;
@@ -322,7 +327,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			}
 			else
 			{
-				throw new RuntimeException("ERROR: Endpoint error constructing \"" + id + "\".");
+				throw new RuntimeException(generateFeedback(ErrorType.ENDPOINTERR,id, null, 0));
 			}
 			worldDict.put(id, newLink);
 			
@@ -330,7 +335,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		else
 		{
 			//user tried to reuse a name
-			throw new IllegalStateException("ERROR: \"" + id + "\" has already been used as an identifier."); 
+			throw new IllegalStateException(generateFeedback(ErrorType.IDCONFLICT,id, null, 0)); 
 		}
 		
 		if (debug)
@@ -363,9 +368,8 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			&& !bNodeCheck && !bJunctCheck)
 			{
 				//Both parameters are invalid
-				String throwline = "ERROR: \"" + aid + "\" is not an valid identifier for an existing Node or Junction. PARAM 0.";
-				throwline = throwline + System.lineSeparator() + "ERROR: \"" + bid + "\" is not an valid identifier for an existing Node or Junction. PARAM 1.";
-				throw new RuntimeException(throwline);				
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, aid, "Node or Junction", 0)
+						+ System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, bid, "Node or Junction", 1));				
 			}
 			if ((aNodeCheck || aJunctCheck))
 			{
@@ -375,7 +379,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			else
 			{
 				//parameter 0 is invalid
-				throw new RuntimeException("ERROR: \"" + aid + "\" is not an valid identifier for an existing Node or Junction. PARAM 0.");
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, aid, "Node or Junction", 0));	
 			}
 			
 			if ((bNodeCheck || bJunctCheck))
@@ -386,7 +390,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			else
 			{
 				//parameter 1 is invalid
-				throw new RuntimeException("ERROR: \"" + bid + "\" is not an valid identifier for an existing Node or Junction. PARAM 1.");
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, bid, "Node or Junction", 1));	
 			}
 			Link newLink;
 			Node nodeA;
@@ -419,7 +423,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			}
 			else
 			{
-				throw new RuntimeException("ERROR: Endpoint error constructing \"" + id + "\".");
+				throw new RuntimeException(generateFeedback(ErrorType.ENDPOINTERR,id, null, 0));
 			}
 			
 			worldDict.put(id, newLink);
@@ -428,7 +432,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		else
 		{
 			//user tried to reuse a name
-			throw new IllegalStateException("ERROR: \"" + id + "\" has already been used as an identifier."); 
+			throw new IllegalStateException(generateFeedback(ErrorType.IDCONFLICT,id, null, 0)); 
 		}
 		
 		if (debug)
@@ -462,9 +466,8 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			&& !bNodeCheck && !bJunctCheck)
 			{
 				//Both parameters are invalid
-				String throwline = "ERROR: \"" + aid + "\" is not an valid identifier for an existing Node or Junction. PARAM 0.";
-				throwline = throwline + System.lineSeparator() + "ERROR: \"" + bid + "\" is not an valid identifier for an existing Node or Junction. PARAM 1.";
-				throw new RuntimeException(throwline);				
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, aid, "Node or Junction", 0)
+						+ System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, bid, "Node or Junction", 1));				
 			}
 			if ((aNodeCheck || aJunctCheck))
 			{
@@ -474,7 +477,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			else
 			{
 				//parameter 0 is invalid
-				throw new RuntimeException("ERROR: \"" + aid + "\" is not an valid identifier for an existing Node or Junction. PARAM 0.");
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, aid, "Node or Junction", 0));	
 			}
 			
 			if ((bNodeCheck || bJunctCheck))
@@ -485,7 +488,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			else
 			{
 				//parameter 1 is invalid
-				throw new RuntimeException("ERROR: \"" + bid + "\" is not an valid identifier for an existing Node or Junction. PARAM 1.");
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, bid, "Node or Junction", 1));	
 			}
 			Link newLink;
 			Node nodeA;
@@ -518,7 +521,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			}
 			else
 			{
-				throw new RuntimeException("ERROR: Endpoint error constructing \"" + id + "\".");
+				throw new RuntimeException(generateFeedback(ErrorType.ENDPOINTERR,id, null, 0));
 			}
 			
 			worldDict.put(id, newLink);
@@ -527,7 +530,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		else
 		{
 			//user tried to reuse a name
-			throw new IllegalStateException("ERROR: \"" + id + "\" has already been used as an identifier."); 
+			throw new IllegalStateException(generateFeedback(ErrorType.IDCONFLICT,id, null, 0)); 
 		}
 		
 		if (debug)
@@ -542,32 +545,31 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 
 	public Void visitAssignAct(PathyParser.AssignActContext ctx)
 	{
-		String aID = ctx.idpar(0).getText();
-		String nID = ctx.idpar(1).getText();
+		String aid = ctx.idpar(0).getText();
+		String nid = ctx.idpar(1).getText();
 
-		if (worldDict.containsKey(aID) && worldDict.containsKey(nID))
+		boolean isact = checkItemAction(aid);
+		boolean isnode = checkItemNode(nid);
+		
+		if (!isact && !isnode)
 		{
-			boolean isact = checkItemAction(aID);
-			boolean isnode = checkItemNode(nID);
-			if (!isact && !isnode)
-			{
-				throw new RuntimeException("ERROR: \"" + aID + "\" is not an valid identifier for an existing Action. PARAM 0."
-						+ System.lineSeparator() + "ERROR: \"" + nID + "\" is not an valid identifier for an existing Node. PARAM 1.");
-			}
-			else if (!isact)
-			{
-				throw new RuntimeException("ERROR: \"" + aID + "\" is not an valid identifier for an existing Action. PARAM 0.");
-			}
-			else if (!isnode)
-			{
-				throw new RuntimeException("ERROR: \"" + nID + "\" is not an valid identifier for an existing Node. PARAM 1.");
-			}
-			//both checked out lets add it now
-			Node n = (Node) worldDict.get(nID);
-			Action a = (Action) worldDict.get(aID);
-			
-			n.addAction(a);
+			throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID,aid, "Action", 0)
+					+ System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID,nid, "Node", 1));
 		}
+		else if (!isact)
+		{
+			throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID,aid, "Action", 0));
+		}
+		else if (!isnode)
+		{
+			throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID,nid, "Node", 1));
+		}
+		
+		//both checked out lets add it now
+		Node n = (Node) worldDict.get(nid);
+		Action a = (Action) worldDict.get(aid);
+		
+		n.addAction(a);
 		return null;
 	}
 
@@ -591,7 +593,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 				if (l.getA() == item || l.getB() == item)
 				{
 					//Throws: if [ID] is a Node or Junction, and is attached to one or more Links
-					throw new IllegalStateException("ERROR: \"" + id + "\" is an endpoit for \"" + l.getID() 
+					throw new IllegalStateException("ERROR: \"" + id + "\" is an endpoint for \"" + l.getID() 
 							+ "\". Cannot remove \"" + id + "\" unless the Link is removed first."); 
 				}
 			}
@@ -665,7 +667,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		else
 		{
 			//parameter 0 is invalid
-			throw new RuntimeException("ERROR: \"" + id + "\" is not an valid identifier for an existing Link. PARAM 0.");
+			throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, id, "Link", 0));
 		}
 		return null;
 	}
@@ -689,7 +691,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			else
 			{
 				//parameter 0 is invalid
-				throw new RuntimeException("ERROR: \"" + id + "\" is not an valid identifier for an existing Entity. PARAM 0.");
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, id, "Entity", 0));
 			}
 			break;
 		case PathyParser.SW:
@@ -701,7 +703,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			else
 			{
 				//parameter 0 is invalid
-				throw new RuntimeException("ERROR: \"" + id + "\" is not an valid identifier for an existing Link. PARAM 0.");
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, id, "Link", 0));
 			}
 			break;
 		}
@@ -710,11 +712,113 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 	
 	public Void visitMoveEnt(PathyParser.MoveEntContext ctx)
 	{
-		return null;	
+		String eid = ctx.idpar(0).getText();
+		String nid = ctx.idpar(1).getText();
+
+		boolean isentity = checkItemEntity(eid);
+		boolean isnode = checkItemNode(nid);
+		if (!isentity && !isnode)
+		{
+			throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, eid, "Entity", 0)
+					+ System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, nid, "Node", 1));
+		}
+		else if (!isentity)
+		{
+			throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, eid, "Entity", 0));
+		}
+		else if (!isnode)
+		{
+			throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, nid, "Node", 1));
+		}
+		//both checked out lets add it now
+		Node n = (Node) worldDict.get(nid);
+		Entity e = (Entity) worldDict.get(eid);
+		
+		e.setLocation(n);
+		
+		return null;
 	}
 
 	public Void visitSetLink1W(PathyParser.SetLink1WContext ctx)
 	{
+		String lid = ctx.idpar(0).getText();
+		String aid = ctx.idpar(1).getText();
+		String bid = ctx.idpar(2).getText();
+		boolean islink = checkItemEntity(lid);
+		boolean isA = checkItemNode(aid) || checkItemJunction(aid);
+		boolean isB = checkItemNode(bid) || checkItemJunction(bid);
+		if (!islink && !isA && !isB)
+		{
+			throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, lid, "Link", 0)
+					+ System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, aid, "Node or Junction", 1)
+					+ System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, bid, "Node or Junction", 2));
+		}
+		else if (!islink && !isA)
+		{
+			throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, lid, "Link", 0)
+					+ System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, aid, "Node or Junction", 1));
+		}
+		else if (!islink && !isB)
+		{
+			throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, lid, "Link", 0)
+					+ System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, bid, "Node or Junction", 2));
+		}
+		else if (!isA && !isB)
+		{
+			throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, aid, "Node or Junction", 1)
+					+ System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, bid, "Node or Junction", 2));
+		}
+		else if (!islink)
+		{
+			throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, lid, "Link", 0));
+		}
+		else if (!isA)
+		{
+			throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, aid, "Node or Junction", 1));
+		}
+		else if (!isB)
+		{
+			throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, bid, "Node or Junction", 2));
+		}
+		//two final checks - are the nodes on the Link, and are the nodes the same (just in same it slipped through)
+		if (aid.equals(bid))
+		{
+			throw new RuntimeException("ERROR: Both endpoints refer to the same Node or Junction");
+		}
+		Link l = (Link)worldDict.get(lid);
+		PathyObject a = worldDict.get(lid);
+		PathyObject b = worldDict.get(lid);
+		
+		if (l.isEndpoint(a) && l.isEndpoint(b))
+		{			
+			//all checks out lets do it now
+			if (a == l.getA())
+			{
+				l.setDirection(LinkDir.ATOB);
+			}
+			else
+			{
+				l.setDirection(LinkDir.BTOA);
+			}
+		}
+		else
+		{
+			if (!l.isEndpoint(a) && !l.isEndpoint(b))
+			{
+				//both weren't endpoints
+				throw new RuntimeException("ERROR: The supplied endpoints, \"" + aid + "\"and \""+ bid +"\", were not found at either end of \""+ lid +"\".");				
+			}
+			else if (!l.isEndpoint(a))
+			{
+				//a wasn't an endpoint
+				throw new RuntimeException("ERROR: The supplied endpoint, \"" + aid + "\", was not found at either end of \""+ lid +"\". PARAM 1");	
+			}
+			else
+			{
+				//b wasn't an endpoint
+				throw new RuntimeException("ERROR: The supplied endpoint, \"" + bid + "\", was not found at either end of \""+ lid +"\". PARAM 2");	
+			}
+		}
 		return null;
 	}
 
@@ -724,8 +828,30 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 	}
 
 //query statements
-	public Void visitNoParamQuery()
+	public Void visitNoParamQuery(PathyParser.NoParamQueryContext ctx)
 	{
+		HashSet<? extends PathyObject> items = null;
+		switch(ctx.op.getType()) {
+		case PathyParser.FPN:
+			items = getNodes();
+			break;
+		case PathyParser.FPA:
+			items = getActions();
+			break;
+		case PathyParser.FPL:
+			items = getLinks();
+			break;
+		case PathyParser.FPJ:
+			items = getJunctions();
+			break;
+		case PathyParser.FPE:
+			items = getEntities();
+			break;
+		}
+		for (PathyObject i : items)
+		{
+			System.out.println(i.getID());
+		}
 		return null;
 	}
 
