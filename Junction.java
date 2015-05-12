@@ -1,43 +1,16 @@
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
-public class Junction extends PathyObject
+public class Junction extends PathyPlace
 {
 	public Junction(String _id)
 	{
 		super(_id, PathyType.JUNCT);
 	}
 
-	private HashSet<Link> connections;
-	private HashMap<LinkPair, LinkDir> internalConnections; 
+	private HashMap<LinkPair, LinkDir> internalConnections;
 
-	private void checkConnections(Link a, Link b) {
-		//if either link doesn't appear to be connected, throw
-		if (!connections.contains(a) && !connections.contains(b))
-		{
-			throw new RuntimeException("Error: \"" + this.id + "\" is not connected to Links called \"" + a.id + "\" or \"" + b.id + "\".");
-		}
-		else if (!connections.contains(a))
-		{
-			throw new RuntimeException("Error: \"" + this.id + "\" is not connected to a Link called \"" + a.id + "\".");
-		}
-		else if (!connections.contains(b))
-		{
-			throw new RuntimeException("Error: \"" + this.id + "\" is not connected to a Link called \"" + b.id + "\".");
-		}
-	}
-
-	public HashSet<Link> getConnections()
-	{
-		return connections;
-	}
-
-	public boolean addConnection(Link l)
-	{
-		return connections.add(l);
-	}
-
+	@Override
 	public boolean removeConnection(Link l)
 	{
 		boolean ret = connections.remove(l);
@@ -59,6 +32,10 @@ public class Junction extends PathyObject
 		return ret;
 	}
 
+	public HashMap<LinkPair, LinkDir> getInternalConnections() {
+		return internalConnections;
+	}
+	
 	public void setInternal(Link a, Link b, LinkDir d)
 	{
 		checkConnections(a,b);

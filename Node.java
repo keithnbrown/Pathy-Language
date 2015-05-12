@@ -1,6 +1,6 @@
 import java.util.HashSet;
 
-public class Node extends PathyObject
+public class Node extends PathyPlace
 {
 
 	HashSet<Action> activities;

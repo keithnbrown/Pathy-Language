@@ -14,7 +14,7 @@ ds	:	op=(NODE|JUNCT|ACT) idpar PSTART PEND ';'					#SimpleDec
 
 fs	:	op=(SL2|SLB) PSTART idpar PEND ';'					#SetLink2B
 	|	op=(SE|SW) PSTART idpar ',' intpar PEND ';'				#SetVals
-	|	'MoveEntity' PSTART idpar PEND ';'					#MoveEnt
+	|	'MoveEntity' PSTART idpar ',' idpar PEND ';'					#MoveEnt
 	|	'SetLinkOneWay' PSTART idpar ',' idpar ',' idpar PEND ';'		#SetLink1W
 	|	'SetJunctDirection' PSTART idpar ',' idpar ',' dirpar PEND ';'	#SetJunctDir
 	;
@@ -48,6 +48,7 @@ F1C	:	'Connectivity';
 F1I	:	'WhereIs';
 F1T	:	'LinkedTo';
 F1B	:	'ConnectedBy';
+F1O	:	'TypeOf';
 
 F2A	:	'ConnectedBy';
 F2B	:	'CanMove';

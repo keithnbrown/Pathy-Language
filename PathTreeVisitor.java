@@ -1,7 +1,9 @@
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
+import java.util.Set;
 
 
 public class PathTreeVisitor extends PathyBaseVisitor<Void>
@@ -33,6 +35,11 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 	private boolean checkItemEntity(String id)
 	{
 		return worldDict.containsKey(id) && worldDict.get(id).getType() == PathyType.ENTITY;
+	}
+	
+	private boolean checkItemPlace(String id)
+	{
+		return worldDict.containsKey(id) && (worldDict.get(id).getType() == PathyType.JUNCT || worldDict.get(id).getType() == PathyType.NODE);
 	}
 
 	private HashSet<Node> getNodes()
@@ -260,25 +267,23 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		String bid = ctx.idpar(2).getText();
 		if (!worldDict.containsKey(id))
 		{
-			PathyObject tempA;
-			PathyObject tempB;
-			boolean aNodeCheck = checkItemNode(aid);
-			boolean bNodeCheck = checkItemNode(bid);
-			boolean aJunctCheck = checkItemJunction(aid);
-			boolean bJunctCheck = checkItemJunction(bid);
+			PathyPlace placeA;
+			PathyPlace placeB;
+			boolean aCheck = checkItemPlace(aid);
+			boolean bCheck = checkItemPlace(bid);
 			//check if the parameters provided exist and are a nodes or junctions
 			//there are a few checks due to Links taking different types for the same parameter signature
-			if (!aNodeCheck && !aJunctCheck
-			&& !bNodeCheck && !bJunctCheck)
+			if (!aCheck && !bCheck)
 			{
 				//Both parameters are invalid
 				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, aid, "Node or Junction", 0)
 						+ System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, bid, "Node or Junction", 1));
 			}
-			if ((aNodeCheck || aJunctCheck))
+			
+			if ((aCheck))
 			{
 				//parameter 0 is valid
-				tempA = worldDict.get(aid);
+				placeA = (PathyPlace)worldDict.get(aid);
 			}
 			else
 			{
@@ -286,51 +291,18 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, aid, "Node or Junction", 0));
 			}
 
-			if ((bNodeCheck || bJunctCheck))
+			if ((bCheck))
 			{
 				//parameter 1 is valid
-				tempB = worldDict.get(bid);
+				placeB = (PathyPlace)worldDict.get(bid);
 			}
 			else
 			{
 				//parameter 1 is invalid
 				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, bid, "Node or Junction", 1));
 			}
-			Link newLink;
-			Node nodeA;
-			Node nodeB;
-			Junction junctA;
-			Junction junctB;
-			if (tempA.getType() == PathyType.NODE && tempB.getType() == PathyType.NODE)
-			{
-				nodeA = (Node)tempA;
-				nodeB = (Node)tempB;
-				newLink = new Link(id, nodeA, nodeB);
-			}
-			else if (tempA.getType() == PathyType.NODE && tempB.getType() == PathyType.JUNCT)
-			{
-				nodeA = (Node)tempA;
-				junctB = (Junction)tempB;
-				newLink = new Link(id, nodeA, junctB);
-			}
-			else if (tempA.getType() == PathyType.JUNCT && tempB.getType() == PathyType.NODE)
-			{
-				junctA = (Junction)tempA;
-				nodeB = (Node)tempB;
-				newLink = new Link(id, junctA, nodeB);
-			}
-			else if (tempA.getType() == PathyType.JUNCT && tempB.getType() == PathyType.JUNCT)
-			{
-				junctA = (Junction)tempA;
-				junctB = (Junction)tempB;
-				newLink = new Link(id, junctA, junctB);
-			}
-			else
-			{
-				throw new RuntimeException(generateFeedback(ErrorType.ENDPOINTERR,id, null, 0));
-			}
+			Link newLink = new Link(id, placeA, placeB);
 			worldDict.put(id, newLink);
-
 		}
 		else
 		{
@@ -356,25 +328,24 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		int weight = Integer.parseInt(ctx.intpar().getText());
 		if (!worldDict.containsKey(id))
 		{
-			PathyObject tempA;
-			PathyObject tempB;
-			boolean aNodeCheck = checkItemNode(aid);
-			boolean bNodeCheck = checkItemNode(bid);
-			boolean aJunctCheck = checkItemJunction(aid);
-			boolean bJunctCheck = checkItemJunction(bid);
+
+			PathyPlace placeA;
+			PathyPlace placeB;
+			boolean aCheck = checkItemPlace(aid);
+			boolean bCheck = checkItemPlace(bid);
 			//check if the parameters provided exist and are a nodes or junctions
 			//there are a few checks due to Links taking different types for the same parameter signature
-			if (!aNodeCheck && !aJunctCheck
-			&& !bNodeCheck && !bJunctCheck)
+			if (!aCheck && !bCheck)
 			{
 				//Both parameters are invalid
 				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, aid, "Node or Junction", 0)
 						+ System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, bid, "Node or Junction", 1));
 			}
-			if ((aNodeCheck || aJunctCheck))
+			
+			if ((aCheck))
 			{
 				//parameter 0 is valid
-				tempA = worldDict.get(aid);
+				placeA = (PathyPlace)worldDict.get(aid);
 			}
 			else
 			{
@@ -382,49 +353,18 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, aid, "Node or Junction", 0));
 			}
 
-			if ((bNodeCheck || bJunctCheck))
+			if ((bCheck))
 			{
 				//parameter 1 is valid
-				tempB = worldDict.get(bid);
+				placeB = (PathyPlace)worldDict.get(bid);
 			}
 			else
 			{
 				//parameter 1 is invalid
 				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, bid, "Node or Junction", 1));
 			}
-			Link newLink;
-			Node nodeA;
-			Node nodeB;
-			Junction junctA;
-			Junction junctB;
-			if (tempA.getType() == PathyType.NODE && tempB.getType() == PathyType.NODE)
-			{
-				nodeA = (Node)tempA;
-				nodeB = (Node)tempB;
-				newLink = new Link(id, nodeA, nodeB, weight);
-			}
-			else if (tempA.getType() == PathyType.NODE && tempB.getType() == PathyType.JUNCT)
-			{
-				nodeA = (Node)tempA;
-				junctB = (Junction)tempB;
-				newLink = new Link(id, nodeA, junctB, weight);
-			}
-			else if (tempA.getType() == PathyType.JUNCT && tempB.getType() == PathyType.NODE)
-			{
-				junctA = (Junction)tempA;
-				nodeB = (Node)tempB;
-				newLink = new Link(id, junctA, nodeB, weight);
-			}
-			else if (tempA.getType() == PathyType.JUNCT && tempB.getType() == PathyType.JUNCT)
-			{
-				junctA = (Junction)tempA;
-				junctB = (Junction)tempB;
-				newLink = new Link(id, junctA, junctB, weight);
-			}
-			else
-			{
-				throw new RuntimeException(generateFeedback(ErrorType.ENDPOINTERR,id, null, 0));
-			}
+			
+			Link newLink = new Link(id, placeA, placeB, weight);
 
 			worldDict.put(id, newLink);
 
@@ -454,25 +394,24 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		LinkDir dir = LinkDir.values()[Integer.parseInt(ctx.dirpar().getText())];
 		if (!worldDict.containsKey(id))
 		{
-			PathyObject tempA;
-			PathyObject tempB;
-			boolean aNodeCheck = checkItemNode(aid);
-			boolean bNodeCheck = checkItemNode(bid);
-			boolean aJunctCheck = checkItemJunction(aid);
-			boolean bJunctCheck = checkItemJunction(bid);
+
+			PathyPlace placeA;
+			PathyPlace placeB;
+			boolean aCheck = checkItemPlace(aid);
+			boolean bCheck = checkItemPlace(bid);
 			//check if the parameters provided exist and are a nodes or junctions
 			//there are a few checks due to Links taking different types for the same parameter signature
-			if (!aNodeCheck && !aJunctCheck
-			&& !bNodeCheck && !bJunctCheck)
+			if (!aCheck && !bCheck)
 			{
 				//Both parameters are invalid
 				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, aid, "Node or Junction", 0)
 						+ System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, bid, "Node or Junction", 1));
 			}
-			if ((aNodeCheck || aJunctCheck))
+			
+			if ((aCheck))
 			{
 				//parameter 0 is valid
-				tempA = worldDict.get(aid);
+				placeA = (PathyPlace)worldDict.get(aid);
 			}
 			else
 			{
@@ -480,49 +419,17 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, aid, "Node or Junction", 0));
 			}
 
-			if ((bNodeCheck || bJunctCheck))
+			if ((bCheck))
 			{
 				//parameter 1 is valid
-				tempB = worldDict.get(bid);
+				placeB = (PathyPlace)worldDict.get(bid);
 			}
 			else
 			{
 				//parameter 1 is invalid
 				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, bid, "Node or Junction", 1));
 			}
-			Link newLink;
-			Node nodeA;
-			Node nodeB;
-			Junction junctA;
-			Junction junctB;
-			if (tempA.getType() == PathyType.NODE && tempB.getType() == PathyType.NODE)
-			{
-				nodeA = (Node)tempA;
-				nodeB = (Node)tempB;
-				newLink = new Link(id, nodeA, nodeB, weight, dir);
-			}
-			else if (tempA.getType() == PathyType.NODE && tempB.getType() == PathyType.JUNCT)
-			{
-				nodeA = (Node)tempA;
-				junctB = (Junction)tempB;
-				newLink = new Link(id, nodeA, junctB, weight, dir);
-			}
-			else if (tempA.getType() == PathyType.JUNCT && tempB.getType() == PathyType.NODE)
-			{
-				junctA = (Junction)tempA;
-				nodeB = (Node)tempB;
-				newLink = new Link(id, junctA, nodeB, weight, dir);
-			}
-			else if (tempA.getType() == PathyType.JUNCT && tempB.getType() == PathyType.JUNCT)
-			{
-				junctA = (Junction)tempA;
-				junctB = (Junction)tempB;
-				newLink = new Link(id, junctA, junctB, weight, dir);
-			}
-			else
-			{
-				throw new RuntimeException(generateFeedback(ErrorType.ENDPOINTERR,id, null, 0));
-			}
+			Link newLink = new Link(id, placeA, placeB, weight, dir);
 
 			worldDict.put(id, newLink);
 
@@ -587,15 +494,12 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 
 		if (itemtype == PathyType.NODE || itemtype == PathyType.JUNCT)
 		{
-			HashSet<Link> links = getLinks();
-			for (Link l : links)
+			PathyPlace p = (PathyPlace)item;
+			
+			if (p.isConnected())
 			{
-				if (l.getA() == item || l.getB() == item)
-				{
-					//Throws: if [ID] is a Node or Junction, and is attached to one or more Links
-					throw new IllegalStateException("ERROR: \"" + id + "\" is an endpoint for \"" + l.getID() 
-							+ "\". Cannot remove \"" + id + "\" unless the Link is removed first."); 
-				}
+				//Throws: if [ID] is a Node or Junction, and is attached to one or more Links
+				throw new IllegalStateException("ERROR: \"" + id + "\" is an endpoint for one or more Links. Cannot remove \"" + id + "\" unless all Links are removed first."); 
 			}
 		}
 
@@ -642,6 +546,13 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 				System.out.println("WARNING: \"" + id + "\" was assigned to one or more nodes. Some Nodes may not have any Actions assigned to them as a result.");
 			}
 		}
+		
+		if (itemtype == PathyType.LINK)
+		{
+			Link l = (Link)item;
+			l.delink();
+		}
+		
 		//now as the housekeeping has been taken care of we can finally delete the item.
 		worldDict.remove(id);
 		System.gc();
@@ -745,8 +656,8 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		String aid = ctx.idpar(1).getText();
 		String bid = ctx.idpar(2).getText();
 		boolean islink = checkItemEntity(lid);
-		boolean isA = checkItemNode(aid) || checkItemJunction(aid);
-		boolean isB = checkItemNode(bid) || checkItemJunction(bid);
+		boolean isA = checkItemPlace(aid);
+		boolean isB = checkItemPlace(bid);
 		if (!islink && !isA && !isB)
 		{
 			throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, lid, "Link", 0)
@@ -786,8 +697,8 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			throw new RuntimeException("ERROR: Both endpoints refer to the same Node or Junction");
 		}
 		Link l = (Link)worldDict.get(lid);
-		PathyObject a = worldDict.get(lid);
-		PathyObject b = worldDict.get(lid);
+		PathyPlace a = (PathyPlace)worldDict.get(lid);
+		PathyPlace b = (PathyPlace)worldDict.get(lid);
 
 		if (l.isEndpoint(a) && l.isEndpoint(b))
 		{
@@ -848,15 +759,305 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			items = getEntities();
 			break;
 		}
+		boolean first = true;
+
+		System.out.print("{");
 		for (PathyObject i : items)
 		{
-			System.out.println(i.getID());
+			if (first)
+			{
+				first = false;
+			}
+			else
+			{
+				System.out.print(",");
+			}
+			System.out.print(i.getID());
 		}
+		System.out.println("}");
 		return null;
 	}
 
-	public Void visitOneParamQuery()
+	@SuppressWarnings("unchecked")
+	public Void visitOneParamQuery(PathyParser.OneParamQueryContext ctx)
 	{
+		String id = ctx.idpar().getText();
+		switch(ctx.op.getType()) {
+		case PathyParser.F1L:
+			//Links
+			if (checkItemLink(id))
+			{
+				Link l = (Link)worldDict.get(id);
+				System.out.println("{" + l.getA().getID() + "," + l.getB().getID() + "}");
+			}
+			else
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, id, "Link", 0));
+			}
+			break;
+		case PathyParser.F1D:
+			//Direction
+			if (checkItemLink(id))
+			{
+				Link l = (Link)worldDict.get(id);
+				switch (l.getDirection())
+				{
+				case BLOCKED:
+					System.out.println("{" + "BLOCKED" + "}");
+					break;
+				case TWOWAY:
+					System.out.println("{" + "TWOWAY" + "}");
+					break;
+				case ATOB:
+					System.out.println("{" + "ONEWAY" + "," + l.getA().getID() + "}");
+					break;
+				case BTOA:
+					System.out.println("{" + "ONEWAY" + "," + l.getB().getID() + "}");
+					break;
+				}
+			}
+			else
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, id, "Link", 0));
+			}
+			break;
+		case PathyParser.F1W:
+			//Weight
+			if (checkItemLink(id))
+			{
+				Link l = (Link)worldDict.get(id);
+				System.out.println("{" + Integer.toString(l.getWeight()) + "}");
+			}
+			else
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, id, "Link", 0));
+			}
+			break;
+		case PathyParser.F1A:
+			//ActionsThere
+			if (checkItemNode(id))
+			{
+				Node n = (Node)worldDict.get(id);
+				HashSet<Action> actions = n.getActivities();
+				
+				System.out.print("{");
+
+				boolean first = true;
+				for(Action a : actions)
+				{
+					if (first)
+					{
+						first = false;
+					}
+					else
+					{
+						System.out.print(",");
+					}
+					System.out.print(a.getID());
+				}
+				
+				System.out.println("}");
+				
+			}
+			else
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, id, "Node", 0));
+			}		
+			break;
+		case PathyParser.F1C:
+			//Connectivity
+			if (checkItemJunction(id))
+			{
+				Junction j = (Junction)worldDict.get(id);
+				//i need the links as an indexed collection for what i need to do.
+				ArrayList<Link> connections = new ArrayList<Link>(j.getConnections());
+				int noConns = connections.size();
+				//I also need a clone of the internals map as I'm going to be altering it
+				//so i'm making sure I'm not altering the original
+				HashMap<LinkPair, LinkDir> internals = (HashMap<LinkPair, LinkDir>) j.getInternalConnections().clone();
+				int specified = internals.size();
+				//Some checks to stop some fiddling around
+				//Are there any connections at all?
+				if (noConns < 2)
+				{
+					//there are not enough connections to form internal links, so print the minimum then return
+					System.out.println("{}");
+					return null;
+				}
+				//find the number of combinations possible in the connected links		
+				int combinations = 0;
+				for (int i = noConns - 1; i > 0; --i)
+				{
+					combinations += i;
+				}
+				
+				//find out if all possible combinations are already specified
+				//if not we have to put all the others in so we can iterate over the hashmap
+				if (specified != combinations)
+				{
+					Link a = null;
+					Link b = null;
+					for (int ita = 0; ita < noConns; ++ita)
+					{
+						a = connections.get(ita);
+						for (int itb = ita; itb < noConns; ++itb)
+						{
+							b = connections.get(itb);
+							LinkPair lp = new LinkPair(a,b);
+							if (!internals.containsKey(lp))
+							{
+								internals.put(lp, LinkDir.TWOWAY);
+							}
+						}
+					}
+				}
+				specified = internals.size();
+				if (specified == combinations)
+				{
+					System.out.print("{");
+					Set<Entry<LinkPair, LinkDir>> internalSet = internals.entrySet();
+					for (Entry<LinkPair, LinkDir> connect : internalSet)
+					{
+						LinkPair key = connect.getKey();
+						LinkDir val = connect.getValue();
+						System.out.print("["+ key.getA().getID() +","+ key.getB().getID() +",");
+						switch (val)
+						{
+						case BLOCKED:
+							System.out.print("BLOCKED");
+							break;
+						case TWOWAY:
+							System.out.print("TWOWAY");
+							break;
+						case ATOB:
+							System.out.print("ATOB");
+							break;
+						case BTOA:
+							System.out.print("BTOA");
+							break;
+						}
+						System.out.print("]");
+					}
+					System.out.println("}");
+					//Example output: {[Link1,Link2,TWOWAY][Link1,Link3,TWOWAY][Link2,Link3,BLOCKED]}
+				}
+				else
+				{
+					//if we get here there's a bug somewhere as by now the hashmap should equal the combinations.
+					throw new RuntimeException("CRITICAL: Connectivity - The number of combinations wasn't equal to the size of the internal connections");
+				}
+			}
+			else
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, id, "Junction", 0));
+			}				
+			break;
+		case PathyParser.F1I:
+			//WhereIs
+			if (checkItemEntity(id))
+			{
+				Entity e = (Entity)worldDict.get(id);
+				System.out.println("{" + e.getLocation().getID() + "}");
+			}
+			else
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, id, "Link", 0));
+			}
+			break;
+		case PathyParser.F1T:
+			//LinkedTo
+			if (checkItemPlace(id))
+			{
+				PathyPlace p = (PathyPlace)worldDict.get(id);
+				HashSet<Link> conns = p.getConnections();
+
+				System.out.print("{");
+				boolean first = true;
+				for(Link l : conns)
+				{
+					if (first)
+					{
+						first = false;
+					}
+					else
+					{
+						System.out.print(",");
+					}
+					//divine which end the node is on then print the other
+					if (l.getA() == p)
+					{
+						System.out.print(l.getB().getID());
+					}
+					else
+					{
+						System.out.print(l.getA().getID());
+					}
+				}
+				System.out.println("}");
+			}
+			else
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, id, "Node", 0));
+			}
+			break;
+		case PathyParser.F1B:
+			//ConnectedBy
+			if (checkItemPlace(id))
+			{
+				PathyPlace p = (PathyPlace)worldDict.get(id);
+				HashSet<Link> conns = p.getConnections();
+
+				System.out.print("{");
+				boolean first = true;
+				for(Link l : conns)
+				{
+					if (first)
+					{
+						first = false;
+					}
+					else
+					{
+						System.out.print(",");
+					}
+					System.out.print(l.getID());
+				}
+				System.out.println("}");
+			}
+			else
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, id, "Node", 0));
+			}
+			break;
+		case PathyParser.F1O:
+			//TypeOf
+			if (worldDict.containsKey(id))
+			{
+				PathyObject item = worldDict.get(id);
+				switch(item.getType())
+				{
+				case NODE:
+					System.out.println("{NODE}");
+					break;
+				case LINK:
+					System.out.println("{LINK}");
+					break;
+				case JUNCT:
+					System.out.println("{JUNCTION}");
+					break;
+				case ACTION:
+					System.out.println("{ACTION}");
+					break;
+				case ENTITY:
+					System.out.println("{ENTITY}");
+					break;
+				}
+			}
+			else
+			{
+				throw new RuntimeException("ERROR: \"" + id + "\" is not a valid identifier an object in the world");
+			}
+			break;
+		}
 		return null;
 	}
 

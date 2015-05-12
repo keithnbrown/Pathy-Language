@@ -1,11 +1,11 @@
 public class Link extends PathyObject
 {
-	private PathyObject a;
-	private PathyObject b;
+	private PathyPlace a;
+	private PathyPlace b;
 	private int weight;
 	private LinkDir direction;
 
-	private void checkNotNull(PathyObject _a, PathyObject _b)
+	private void checkNotNull(PathyPlace _a, PathyPlace _b)
 	{
 		if (_a == null && _b == null)
 		{
@@ -25,17 +25,7 @@ public class Link extends PathyObject
 		}
 	}
 
-	public Link(String _id, Node _a, Node _b)
-	{
-		super(_id, PathyType.LINK);
-		checkNotNull(_a,_b);
-		a = _a;
-		b = _b;
-		weight = 0;
-		direction = LinkDir.TWOWAY;
-	}
-
-	public Link(String _id, Junction _a, Junction _b)
+	public Link(String _id, PathyPlace _a, PathyPlace _b)
 	{
 		super(_id, PathyType.LINK);
 		checkNotNull(_a,_b);
@@ -47,79 +37,7 @@ public class Link extends PathyObject
 		direction = LinkDir.TWOWAY;
 	}
 
-	public Link(String _id, Node _a, Junction _b)
-	{
-		super(_id, PathyType.LINK);
-		checkNotNull(_a,_b);
-		a = _a;
-		b = _b;
-		_b.addConnection(this);
-		weight = 0;
-		direction = LinkDir.TWOWAY;
-	}
-
-	public Link(String _id, Junction _a, Node _b)
-	{
-		super(_id, PathyType.LINK);
-		checkNotNull(_a,_b);
-		a = _a;
-		b = _b;
-		_a.addConnection(this);
-		weight = 0;
-		direction = LinkDir.TWOWAY;
-	}
-
-	public Link(String _id, PathyObject _a, PathyObject _b)
-	{
-		super(_id, PathyType.LINK);
-		checkNotNull(_a,_b);
-		boolean throwing = false;
-		String throwline = "";
-		if (!(_a.getType() == PathyType.NODE || _a.getType() == PathyType.JUNCT))
-		{
-			throwline = "ERROR: A endpoint must be a Node or Junciton. PARAM 1";
-			throwing = true;
-		}
-		if (!(_b.getType() == PathyType.NODE || _b.getType() == PathyType.JUNCT))
-		{
-			throwline = (throwline.isEmpty() ? "" : throwline + System.lineSeparator());
-			throwline = throwline + "ERROR: B endpoint must be a Node or Junciton. PARAM 2";
-			throwing = true;
-		}
-		if (throwing)
-		{
-			throw new ClassCastException(throwline);
-		}
-
-		if (_a.getType() == PathyType.JUNCT)
-		{
-			Junction aJunct = (Junction) _a;
-			aJunct.addConnection(this);
-		}
-
-		if(_b.getType() == PathyType.JUNCT)
-		{
-			Junction bJunct = (Junction) _b;
-			bJunct.addConnection(this);
-		}
-
-		a = _a;
-		b = _b;
-		weight = 0;
-		direction = LinkDir.TWOWAY;
-	}
-
-	public Link(String _id, Node _a, Node _b, int _w)
-	{
-		super(_id, PathyType.LINK);
-		checkNotNull(_a,_b);
-		a = _a;
-		b = _b;
-		weight = _w;
-		direction = LinkDir.TWOWAY;
-	}
-
-	public Link(String _id, Junction _a, Junction _b, int _w)
+	public Link(String _id, PathyPlace _a, PathyPlace _b, int _w)
 	{
 		super(_id, PathyType.LINK);
 		checkNotNull(_a,_b);
@@ -131,80 +49,7 @@ public class Link extends PathyObject
 		direction = LinkDir.TWOWAY;
 	}
 
-	public Link(String _id, Node _a, Junction _b, int _w)
-	{
-		super(_id, PathyType.LINK);
-		checkNotNull(_a,_b);
-		a = _a;
-		b = _b;
-		_b.addConnection(this);
-		weight = _w;
-		direction = LinkDir.TWOWAY;
-	}
-
-	public Link(String _id, Junction _a, Node _b, int _w)
-	{
-		super(_id, PathyType.LINK);
-		checkNotNull(_a,_b);
-		a = _a;
-		b = _b;
-		_a.addConnection(this);
-		weight = _w;
-		direction = LinkDir.TWOWAY;
-	}
-
-	public Link(String _id, PathyObject _a, PathyObject _b, int _w)
-	{
-		super(_id, PathyType.LINK);
-		checkNotNull(_a,_b);
-		boolean throwing = false;
-		String throwline = "";
-		if (!(_a.getType() == PathyType.NODE || _a.getType() == PathyType.JUNCT))
-		{
-			throwline = "ERROR: A endpoint must be a Node or Junciton. PARAM 1";
-			throwing = true;
-		}
-		if (!(_b.getType() == PathyType.NODE || _b.getType() == PathyType.JUNCT))
-		{
-			throwline = (throwline.isEmpty() ? "" : throwline + System.lineSeparator());
-			throwline = throwline + "ERROR: B endpoint must be a Node or Junciton. PARAM 2";
-			throwing = true;
-		}
-		if (throwing)
-		{
-			throw new ClassCastException(throwline);
-		}
-
-		if (_a.getType() == PathyType.JUNCT)
-		{
-			Junction aJunct = (Junction) _a;
-			aJunct.addConnection(this);
-		}
-
-		if(_b.getType() == PathyType.JUNCT)
-		{
-			Junction bJunct = (Junction) _b;
-			bJunct.addConnection(this);
-		}
-
-		a = _a;
-		b = _b;
-		weight = _w;
-		direction = LinkDir.TWOWAY;
-	}
-
-
-	public Link(String _id, Node _a, Node _b, int _w, LinkDir _d)
-	{
-		super(_id, PathyType.LINK);
-		checkNotNull(_a,_b);
-		a = _a;
-		b = _b;
-		weight = _w;
-		direction = _d;
-	}
-
-	public Link(String _id, Junction _a, Junction _b, int _w, LinkDir _d)
+	public Link(String _id, PathyPlace _a, PathyPlace _b, int _w, LinkDir _d)
 	{
 		super(_id, PathyType.LINK);
 		checkNotNull(_a,_b);
@@ -216,79 +61,23 @@ public class Link extends PathyObject
 		direction = _d;
 	}
 
-	public Link(String _id, Node _a, Junction _b, int _w, LinkDir _d)
-	{
-		super(_id, PathyType.LINK);
-		checkNotNull(_a,_b);
-		a = _a;
-		b = _b;
-		_b.addConnection(this);
-		weight = _w;
-		direction = _d;
-	}
-
-	public Link(String _id, Junction _a, Node _b, int _w, LinkDir _d)
-	{
-		super(_id, PathyType.LINK);
-		checkNotNull(_a,_b);
-		a = _a;
-		b = _b;
-		_a.addConnection(this);
-		weight = _w;
-		direction = _d;
-	}
-
-	public Link(String _id, PathyObject _a, PathyObject _b, int _w, LinkDir _d)
-	{
-		super(_id, PathyType.LINK);
-		checkNotNull(_a,_b);
-		boolean throwing = false;
-		String throwline = "";
-		if (!(_a.getType() == PathyType.NODE || _a.getType() == PathyType.JUNCT))
-		{
-			throwline = "ERROR: A endpoint must be a Node or Junciton. PARAM 1";
-			throwing = true;
-		}
-		if (!(_b.getType() == PathyType.NODE || _b.getType() == PathyType.JUNCT))
-		{
-			throwline = (throwline.isEmpty() ? "" : throwline + System.lineSeparator());
-			throwline = throwline + "ERROR: B endpoint must be a Node or Junciton. PARAM 2";
-			throwing = true;
-		}
-		if (throwing)
-		{
-			throw new ClassCastException(throwline);
-		}
-
-		if (_a.getType() == PathyType.JUNCT)
-		{
-			Junction aJunct = (Junction) _a;
-			aJunct.addConnection(this);
-		}
-
-		if(_b.getType() == PathyType.JUNCT)
-		{
-			Junction bJunct = (Junction) _b;
-			bJunct.addConnection(this);
-		}
-
-		a = _a;
-		b = _b;
-		weight = _w;
-		direction = _d;
-	}
-
-	public PathyObject getA()
+	public PathyPlace getA()
 	{
 		return a;
 	}
 
-	public PathyObject getB()
+	public PathyPlace getB()
 	{
 		return b;
 	}
 
-	public boolean isEndpoint(PathyObject end)
+	public void delink()
+	{
+		a.removeConnection(this);
+		b.removeConnection(this);
+	}
+	
+	public boolean isEndpoint(PathyPlace end)
 	{
 		return end == a || end == b;
 	}
