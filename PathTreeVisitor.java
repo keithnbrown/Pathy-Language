@@ -697,8 +697,8 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			throw new RuntimeException("ERROR: Both endpoints refer to the same Node or Junction");
 		}
 		Link l = (Link)worldDict.get(lid);
-		PathyPlace a = (PathyPlace)worldDict.get(lid);
-		PathyPlace b = (PathyPlace)worldDict.get(lid);
+		PathyPlace a = (PathyPlace)worldDict.get(aid);
+		PathyPlace b = (PathyPlace)worldDict.get(bid);
 
 		if (l.isEndpoint(a) && l.isEndpoint(b))
 		{
