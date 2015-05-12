@@ -1061,7 +1061,149 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		return null;
 	}
 
-	public Void visitTwoParamQuery() {
+	public Void visitTwoParamQuery(PathyParser.TwoParamQueryContext ctx) {
+		String par1 = ctx.idpar(0).getText();
+		String par2 = ctx.idpar(1).getText();
+		boolean isNode1 = checkItemNode(par1);
+		boolean isEntity1 = checkItemEntity(par1);
+		boolean isNode2 = checkItemNode(par2);
+		
+		switch(ctx.op.getType())
+		{
+		case PathyParser.F2A:
+		//PathTo
+			if (isNode1 && isNode2)
+			{
+				Node nodeA = (Node)worldDict.get(par1);
+				Node nodeB = (Node)worldDict.get(par2);
+				//TODO: Path Finding Algorithm
+			}
+			else if (!isNode1 && !isNode2)
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, par1, "Node", 0) + System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, par2, "Node", 1));
+			}
+			else if (!isNode1)
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, par1, "Node", 0));
+			}
+			else if (!isNode2)
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, par2, "Node", 1));
+			}				
+			break;
+		case PathyParser.F2B:
+		//CanMove
+			if (isEntity1 && isNode2)
+			{
+				Entity nodeA = (Entity)worldDict.get(par1);
+				Node nodeB = (Node)worldDict.get(par2);
+				//TODO: Path Finding Algorithm
+			}
+			else if (!isEntity1 && !isNode2)
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, par1, "Entity", 0) + System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, par2, "Node", 1));
+			}
+			else if (!isEntity1)
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, par1, "Entity", 0));
+			}
+			else if (!isNode2)
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, par2, "Node", 1));
+			}				
+			break;
+		case PathyParser.F2C:
+		//CanMoveWhy
+			if (isEntity1 && isNode2)
+			{
+				Entity nodeA = (Entity)worldDict.get(par1);
+				Node nodeB = (Node)worldDict.get(par2);
+				//TODO: Path Finding Algorithm
+			}
+			else if (!isEntity1 && !isNode2)
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, par1, "Entity", 0) + System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, par2, "Node", 1));
+			}
+			else if (!isEntity1)
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, par1, "Entity", 0));
+			}
+			else if (!isNode2)
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, par2, "Node", 1));
+			}				
+			break;
+		case PathyParser.F2D:
+		//EnergyReq
+			if (isNode1 && isNode2)
+			{
+				Node nodeA = (Node)worldDict.get(par1);
+				Node nodeB = (Node)worldDict.get(par2);
+				//TODO: Path Finding Algorithm
+			}
+			else if (!isNode1 && !isNode2)
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, par1, "Node", 0) + System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, par2, "Node", 1));
+			}
+			else if (!isNode1)
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, par1, "Node", 0));
+			}
+			else if (!isNode2)
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, par2, "Node", 1));
+			}				
+			break;
+		case PathyParser.F2E:
+		//SharedActions
+			if (isNode1 && isNode2)
+			{
+				Node nodeA = (Node)worldDict.get(par1);
+				Node nodeB = (Node)worldDict.get(par2);
+				HashSet<Action> shared = new HashSet<Action>();
+				HashSet<Action> actionsA = nodeA.getActivities();
+				HashSet<Action> actionsB = nodeB.getActivities();
+				
+				for (Action a : actionsA)
+				{
+					if (actionsB.contains(a))
+					{
+						shared.add(a);
+					}
+				}
+
+				System.out.print("{");
+
+				boolean first = true;
+				for(Action a : shared)
+				{
+					if (first)
+					{
+						first = false;
+					}
+					else
+					{
+						System.out.print(",");
+					}
+					System.out.print(a.getID());
+				}
+				
+				System.out.println("}");
+			}
+			else if (!isNode1 && !isNode2)
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, par1, "Node", 0) + System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, par2, "Node", 1));
+			}
+			else if (!isNode1)
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, par1, "Node", 0));
+			}
+			else if (!isNode2)
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, par2, "Node", 1));
+			}				
+			break;
+		}
 		return null;
 	}
 }

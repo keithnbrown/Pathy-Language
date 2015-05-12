@@ -50,7 +50,7 @@ F1T	:	'LinkedTo';
 F1B	:	'ConnectedBy';
 F1O	:	'TypeOf';
 
-F2A	:	'ConnectedBy';
+F2A	:	'PathTo';
 F2B	:	'CanMove';
 F2C	:	'CanMoveWhy';
 F2D	:	'EnergyReq';
