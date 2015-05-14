@@ -1,7 +1,7 @@
 Demo1.pathy
 
 
-{Node3,Node1,Node2}
+{Node1,Node3,Node2}
 {Linking}
 {}
 {Node1,Node2}
@@ -10,7 +10,7 @@ Demo1.pathy
 Demo1a.pathy
 
 
-{Node3,Node1,Node2}
+{Node2,Node3,Node1}
 {Linking}
 {}
 {Node1,Node2}
@@ -19,14 +19,14 @@ Demo1a.pathy
 Demo2.pathy
 
 
-{Node1,Node3,Node2}
-{Link4,Link2,Link3,Link1}
+{Node2,Node3,Node1}
+{Link3,Link2,Link4,Link1}
 {Node1,Node2}
 {Node2,Node3}
 {Node1,Node3}
 {Node2,Node3}
-{Link4,Link2,Link3}
-{Node1,Node2}
+{Link3,Link2,Link4}
+{Node2,Node1}
 {TWOWAY}
 {BLOCKED}
 {ONEWAY,Node2}
@@ -45,10 +45,10 @@ Demo2.pathy
 Demo3.pathy
 
 
-{y,x,z}
-{e,c,d,b,a}
-{e,c,a}
-{x,z}
+{y,z,x}
+{a,d,c,b,e}
+{a,c,e}
+{z,x}
 {y,z}
 
 
@@ -56,35 +56,35 @@ Demo3a.pathy
 
 
 WARNING: "f" had Action(s) assigned to it. Some actions may not be assigned to any Nodes as a result.
-{y,x,z}
-{e,c,d,b,a}
-{e,c,a}
-{x,z}
-{y,z}
+{z,x,y}
+{b,a,d,e,c}
+{a,e,c}
+{z,x}
+{z,y}
 
 
 Demo3b.pathy
 
 
 WARNING: "w" was assigned to one or more nodes. Some Nodes may not have any Actions assigned to them as a result.
-{y,x,z}
-{e,c,d,b,a}
-{e,c,a}
-{x,z}
+{y,z,x}
+{c,e,d,b,a}
+{c,e,a}
+{z,x}
 {y,z}
 
 
 Demo4.pathy
 
 
-{Node1,Node3,Node2,Node4}
-{Link2,Link3,Link4,Link1}
+{Node2,Node4,Node3,Node1}
+{Link2,Link1,Link4,Link3}
 {Junct1}
-{Node1,Node3,Node4}
-{Link2,Link3,Link4}
-{[Link2,Link4,TWOWAY][Link3,Link4,TWOWAY][Link2,Link3,TWOWAY]}
-{[Link2,Link3,ATOB][Link2,Link4,TWOWAY][Link3,Link4,TWOWAY]}
-{Junct1,Node2}
+{Node4,Node3,Node1}
+{Link2,Link4,Link3}
+{[Link2,Link4,TWOWAY][Link2,Link3,TWOWAY][Link4,Link3,TWOWAY]}
+{[Link2,Link3,ATOB][Link4,Link3,TWOWAY][Link2,Link4,TWOWAY]}
+{Node2,Junct1}
 {Link2,Link1}
 {LINK}
 {JUNCTION}
@@ -94,11 +94,11 @@ Demo4.pathy
 Demo5.pathy
 
 
-{Node4,Node3,Node1,Node2}
-{Link4,Link2,Link1,Link3}
+{Node2,Node4,Node1,Node3}
+{Link3,Link2,Link4,Link1}
 {Junct1}
-{Act2,Act1,Act3}
-{Ent1,Ent2,Ent3}
+{Act3,Act1,Act2}
+{Ent2,Ent1,Ent3}
 {Node1}
 {Node4}
 {Node2}
@@ -114,10 +114,10 @@ Demo5a.pathy
 
 
 {Node4,Node3,Node1,Node2}
-{Link4,Link2,Link1,Link3}
+{Link2,Link3,Link1,Link4}
 {Junct1}
-{Act2,Act1,Act3}
-{Ent1,Ent2}
+{Act1,Act2,Act3}
+{Ent2,Ent1}
 {Node4,Node3,Node1}
 {Act1,Act3}
 {}
@@ -140,14 +140,14 @@ ERROR: "Node4" is an endpoint for one or more Links. Cannot remove "Node4" unles
 Error2a.pathy
 
 
-{Node1,Node3,Node2}
-{Link4,Link2,Link3,Link1}
+{Node2,Node3,Node1}
+{Link3,Link2,Link4,Link1}
 {Node1,Node2}
 {Node2,Node3}
 {Node1,Node3}
 {Node2,Node3}
-{Link4,Link2,Link3}
-{Node1,Node2}
+{Link3,Link2,Link4}
+{Node2,Node1}
 {TWOWAY}
 {BLOCKED}
 {ONEWAY,Node2}
@@ -159,14 +159,14 @@ ERROR: The supplied endpoint, "Node2", was not found at either end of "Link3". P
 Error2b.pathy
 
 
-{Node1,Node3,Node2}
-{Link4,Link2,Link3,Link1}
+{Node3,Node2,Node1}
+{Link1,Link3,Link4,Link2}
 {Node1,Node2}
 {Node2,Node3}
 {Node1,Node3}
 {Node2,Node3}
-{Link4,Link2,Link3}
-{Node1,Node2}
+{Link3,Link4,Link2}
+{Node2,Node1}
 {TWOWAY}
 ERROR: "Node1" is not a valid identifier for an existing Link. PARAM 0.
 
@@ -174,14 +174,14 @@ ERROR: "Node1" is not a valid identifier for an existing Link. PARAM 0.
 Error2c.pathy
 
 
-{Node1,Node3,Node2}
-{Link4,Link2,Link3,Link1}
+{Node3,Node2,Node1}
+{Link1,Link3,Link4,Link2}
 {Node1,Node2}
 {Node2,Node3}
 {Node1,Node3}
 {Node2,Node3}
-{Link4,Link2,Link3}
-{Node1,Node2}
+{Link3,Link4,Link2}
+{Node2,Node1}
 {TWOWAY}
 {BLOCKED}
 {ONEWAY,Node2}
@@ -198,8 +198,8 @@ Error3a.pathy
 
 
 WARNING: "f" had Action(s) assigned to it. Some actions may not be assigned to any Nodes as a result.
-{y,x,z}
-{e,c,d,b,a}
+{y,z,x}
+{d,c,a,b,e}
 ERROR: "f" is not a valid identifier for an existing Action. PARAM 0.
 
 
@@ -207,9 +207,9 @@ Error3b.pathy
 
 
 WARNING: "w" was assigned to one or more nodes. Some Nodes may not have any Actions assigned to them as a result.
-{y,x,z}
-{e,c,d,b,a}
-{e,c,a}
+{y,z,x}
+{c,e,d,b,a}
+{c,e,a}
 ERROR: "s" is not a valid identifier for an existing Node. PARAM 0.
 
 
@@ -222,10 +222,10 @@ ERROR: "Junct1" is an endpoint for one or more Links. Cannot remove "Junct1" unl
 Error4b.pathy
 
 
-{Node1,Node3,Node2,Node4}
-{Link2,Link3,Link4,Link1}
+{Node2,Node4,Node3,Node1}
+{Link2,Link1,Link4,Link3}
 {Junct1}
-{Node1,Node3,Node4}
-{Link2,Link3,Link4}
-{[Link2,Link4,TWOWAY][Link3,Link4,TWOWAY][Link2,Link3,TWOWAY]}
+{Node4,Node3,Node1}
+{Link2,Link4,Link3}
+{[Link2,Link4,TWOWAY][Link2,Link3,TWOWAY][Link4,Link3,TWOWAY]}
 Error: "Junct1" is not connected to a Link called "Link1".
