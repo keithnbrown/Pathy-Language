@@ -197,7 +197,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			//check if the parameter provided exists and is a node
 			if (checkItemNode(nodeid))
 			{
-				Node param = (Node)worldDict.get(id);
+				Node param = (Node)worldDict.get(nodeid);
 				Entity newEnt = new Entity(id, param);
 				worldDict.put(id, newEnt);
 			}
@@ -233,7 +233,12 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			//check if the parameter provided exists and is a node
 			if (checkItemNode(nodeid))
 			{
-				Node param = (Node)worldDict.get(id);
+				//absolute if negative 
+				if (energy < 0)
+				{
+					energy = -energy;
+				}
+				Node param = (Node)worldDict.get(nodeid);
 				Entity newEnt = new Entity(id, param, energy);
 				worldDict.put(id, newEnt);
 			}
@@ -360,6 +365,12 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			{
 				//parameter 1 is invalid
 				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, bid, "Node or Junction", 1));
+			}
+
+			//absolute a negative
+			if (weight < 0)
+			{
+				weight = -weight;
 			}
 			
 			Link newLink = new Link(id, placeA, placeB, weight);
@@ -521,6 +532,13 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 				//parameter 1 is invalid
 				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, bid, "Node or Junction", 1));
 			}
+
+			//absolute a negative
+			if (weight < 0)
+			{
+				weight = -weight;
+			}
+
 			Link newLink = new Link(id, placeA, placeB, weight, dir);
 
 			worldDict.put(id, newLink);
@@ -679,8 +697,8 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 	{
 		String id = ctx.idpar().getText();
 		int val = Integer.parseInt(ctx.intpar().getText());
-		//the grammar won't catch negatives but check and fix it if it does happen.
-		if (val < 0)
+		//Absolute a negative if it's not ModEnergy.
+		if (ctx.op.getType() != PathyParser.ME && val < 0)
 		{
 			val = -val;
 		}
@@ -707,6 +725,18 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			{
 				//parameter 0 is invalid
 				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, id, "Link", 0));
+			}
+			break;
+		case PathyParser.ME:
+			if (checkItemEntity(id))
+			{
+				Entity e = (Entity)worldDict.get(id);
+				e.modEnergy(val);
+			}
+			else
+			{
+				//parameter 0 is invalid
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, id, "Entity", 0));
 			}
 			break;
 		}
@@ -1137,6 +1167,18 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			{
 				Entity e = (Entity)worldDict.get(id);
 				System.out.println("{" + e.getLocation().getID() + "}");
+			}
+			else
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, id, "Link", 0));
+			}
+			break;
+		case PathyParser.F1E:
+			//EnergyLevel
+			if (checkItemEntity(id))
+			{
+				Entity e = (Entity)worldDict.get(id);
+				System.out.println("{" + e.getEnergy() + "}");
 			}
 			else
 			{

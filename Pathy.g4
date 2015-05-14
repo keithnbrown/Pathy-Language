@@ -14,14 +14,14 @@ ds	:	op=(NODE|JUNCT|ACT) idpar PSTART PEND ';'					#SimpleDec
 	;
 
 fs	:	op=(SL2|SLB) PSTART idpar PEND ';'					#SetLink2B
-	|	op=(SE|SW) PSTART idpar ',' intpar PEND ';'				#SetVals
+	|	op=(SE|SW|ME) PSTART idpar ',' intpar PEND ';'				#SetVals
 	|	'MoveEntity' PSTART idpar ',' idpar PEND ';'					#MoveEnt
 	|	'SetLinkOneWay' PSTART idpar ',' idpar ',' idpar PEND ';'		#SetLink1W
 	|	'SetJunctDirection' PSTART idpar ',' idpar ',' idpar ',' dirpar=(DIRTWOW|DIRATOB|DIRBTOA|DIRBLOCKED) PEND ';'	#SetJunctDir
 	;
 
 qs	:	op=(FPN|FPL|FPJ|FPA|FPE) PSTART PEND ';'		 	#NoParamQuery
-	|	op=(F1L|F1D|F1W|F1A|F1C|F1I|F1T|F1B|F1V|F1O) PSTART idpar PEND ';'		#OneParamQuery
+	|	op=(F1L|F1D|F1W|F1A|F1C|F1I|F1T|F1B|F1V|F1O|F1E) PSTART idpar PEND ';'		#OneParamQuery
 	|	op=(F2A|F2B|F2C|F2D|F2E) PSTART idpar ',' idpar PEND ';'		#TwoParamQuery
 	;
 
@@ -29,6 +29,7 @@ idpar	:	ID		#idparam ;
 intpar	:	INT		#intparam ;
 
 SE	:	'SetEnergy';
+ME	:	'ModEnergy';
 SW	:	'SetWeight';
 SL2	:	'SetLinkTwoWay';
 SLB	:	'SetLinkBlocked';
@@ -45,6 +46,7 @@ F1W	:	'Weight';
 F1A	:	'ActionsThere';
 F1C	:	'Connectivity';
 F1I	:	'WhereIs';
+F1E	:	'EnergyLevel';
 F1T	:	'LinkedTo';
 F1B	:	'ConnectedBy';
 F1O	:	'TypeOf';
@@ -63,7 +65,7 @@ DIRATOB	:	'ATOB';
 DIRBTOA	:	'BTOA';
 DIRBLOCKED	:	'BLOCKED';
 ID	:	[A-Za-z] [A-Za-z0-9]* ;
-INT	:	[0-9]+ ;
+INT	:	[\+\-]*[0-9]+ ;
 
 PSTART	:	'(' ;
 PEND	:	')' ;

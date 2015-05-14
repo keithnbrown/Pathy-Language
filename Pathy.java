@@ -1,8 +1,8 @@
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
+
 import java.io.FileInputStream;
 import java.io.InputStream;
-
 import java.util.HashMap;
 
 public class Pathy {
@@ -21,12 +21,23 @@ public class Pathy {
         PathyParser parser = new PathyParser(tokens);
 
         ParseTree tree = parser.r();
-        System.out.println(tree.toStringTree(parser));
-
-	HashMap<String, PathyObject> worldDict = new HashMap<String, PathyObject>();
-
-	PathTreeVisitor eval = new PathTreeVisitor(worldDict);
-	//System.out.println(eval.visit(tree));
-	eval.visit(tree);
+        
+        boolean debug = false;
+        if(debug)
+        {
+        	System.out.println(tree.toStringTree(parser));
+        }
+        
+		HashMap<String, PathyObject> worldDict = new HashMap<String, PathyObject>();
+	
+		PathTreeVisitor eval = new PathTreeVisitor(worldDict);
+		try
+		{
+			eval.visit(tree);
+		}
+		catch(Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
     }
 }
