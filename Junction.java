@@ -3,12 +3,13 @@ import java.util.Set;
 
 public class Junction extends PathyPlace
 {
+	private HashMap<LinkPair, LinkDir> internalConnections;
+	
 	public Junction(String _id)
 	{
 		super(_id, PathyType.JUNCT);
+		internalConnections = new HashMap<LinkPair, LinkDir>();
 	}
-
-	private HashMap<LinkPair, LinkDir> internalConnections;
 
 	@Override
 	public boolean removeConnection(Link l)
@@ -108,11 +109,13 @@ public class Junction extends PathyPlace
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int prime = 31;
 		int result = super.hashCode();
+		//I can't allow it to call internalconnections.Hashcode or it'll cause an infinite loop
 		result = prime * result
-				+ ((connections == null) ? 0 : connections.hashCode());
+				+ ((internalConnections == null) ? 0 : 5);
 		return result;
 	}
 
@@ -120,7 +123,8 @@ public class Junction extends PathyPlace
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj)
+	{
 		if (this == obj)
 			return true;
 		if (!super.equals(obj))
@@ -128,10 +132,12 @@ public class Junction extends PathyPlace
 		if (getClass() != obj.getClass())
 			return false;
 		Junction other = (Junction) obj;
-		if (connections == null) {
-			if (other.connections != null)
+		if (internalConnections == null)
+		{
+			if (other.internalConnections != null)
 				return false;
-		} else if (!connections.equals(other.connections))
+		}
+		else if (!internalConnections.equals(other.internalConnections))
 			return false;
 		return true;
 	}

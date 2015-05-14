@@ -2,12 +2,47 @@ import java.util.HashSet;
 
 public abstract class PathyPlace extends PathyObject
 {
+	protected HashSet<Link> connections;
 
 	public PathyPlace(String _id, PathyType link)
 	{
 		super(_id, link);
+		connections = new HashSet<Link>();
 	}
-	protected HashSet<Link> connections;
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = super.hashCode();
+		//I can't have it call connections.HashCode as it causes an infinite loop
+		result = prime * result + ((connections == null) ? 0 : 5);
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PathyPlace other = (PathyPlace) obj;
+		if (connections == null) {
+			if (other.connections != null)
+				return false;
+		} else if (!connections.equals(other.connections))
+			return false;
+		return true;
+	}
 
 	protected void checkConnections(Link a, Link b) {
 		//if either link doesn't appear to be connected, throw
