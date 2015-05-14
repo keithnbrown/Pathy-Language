@@ -8,19 +8,19 @@ public class LinkPair {
 	{
 		if (_a == null && _b == null)
 		{
-			throw new RuntimeException("Links A and B must be non-null");
+			throw new RuntimeException("ERROR: Links A and B must be non-null");
 		}
 		if (_a == null)
 		{
-			throw new RuntimeException("Link A must be non-null");
+			throw new RuntimeException("ERROR: Link A must be non-null");
 		}
 		if (_b == null)
 		{
-			throw new RuntimeException("Link B must be non-null");
+			throw new RuntimeException("ERROR: Link B must be non-null");
 		}
 		if (_a == _b || _a.equals(_b))
 		{
-			throw new RuntimeException("Links must not be identical");
+			throw new RuntimeException("ERROR: Links must not be identical");
 		}
 		a = _a;
 		b = _b;

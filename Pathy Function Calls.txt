@@ -15,16 +15,16 @@ Node declaration
 Junction declaration
 [ID] - An unused string identifier
 
-^[ID]([A], [B], {Weight}, {Direction})
+^[ID]([A], [B], [Weight], [Direction])
 Link Declaration
 [ID] - An unused string identifier
 [A], [B] - string identifiers of nodes or junctions on either end of the link
-{Weight} - Optional, Default 0 - An Integer amount of energy required for an entity to use this link.
-{Direction} - Optional, Default 0, Weight required if setting direction - Directional assignment. An integer from the following:
-0 = Allows travel both ways.
-1 = Allows travel from A to B only.
-2 = Allows travel from B to A only.
-3 = Blocked. No travel permitted. 
+[Weight] - Optional, Default 0 - An Integer amount of energy required for an entity to use this link.
+[Direction] - Directional assignment. An string from the following:
+TWOWAY = Allows travel both ways.
+ATOB = Allows travel from A to B only.
+BTOA = Allows travel from B to A only.
+BLOCKED = Blocked. No travel permitted.
 
 $[ID]()
 Action declaration
@@ -90,15 +90,17 @@ Sets the energy of [ID] to be [Val]
 [Val] - An integer value 
 Throws: if [ID] doesn't exist
 
-SetJunctDirection([A],[B], [Direction])
-Sets the directional limitations within a junction. If this has not been called on a junction, that junction will default to two-way travel from and to all directions.
-[A], [B] - string identifiers of links connected to a junction. 
-[Direction] - Directional assignment. An integer from the following:
-0 = Allows travel both ways.
-1 = Allows travel from A to B only.
-2 = Allows travel from B to A only.
-3 = Blocked. No travel permitted.
-Throws: if [A] and/or [B] are not connected to the junction or do not exist
+SetJunctDirection([Junction], [A],[B], [Direction])
+Sets the directional limitations within [Junction]. If this has not been called on a junction, that junction will default to two-way travel from and to all directions.
+[Junction] - a string Identifier of an existing junction.
+[A], [B] - string identifiers of links connected to [Junction]. 
+[Direction] - Directional assignment. An string from the following:
+TWOWAY = Allows travel both ways.
+ATOB = Allows travel from A to B only.
+BTOA = Allows travel from B to A only.
+BLOCKED = Blocked. No travel permitted.
+Throws: if [Jucntion], [A] or [B] does not exist, or [A] and/or [B] are not connected to [Junction]
+
 
 
 ----------------

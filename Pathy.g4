@@ -7,7 +7,7 @@ ds	:	op=(NODE|JUNCT|ACT) idpar PSTART PEND ';'					#SimpleDec
 	|	ENT idpar PSTART idpar ',' intpar PEND ';'					#EntDecEnergy
 	|	LINK idpar PSTART idpar ',' idpar PEND ';'					#LinkDecDef
 	|	LINK idpar PSTART idpar ',' idpar ',' intpar PEND ';'				#LinkDecWeight
-	|	LINK idpar PSTART idpar ',' idpar ',' intpar ',' dirpar PEND ';'		#LinkDecBoth
+	|	LINK idpar PSTART idpar ',' idpar ',' intpar ',' dirpar=(DIRTWOW|DIRATOB|DIRBTOA|DIRBLOCKED) PEND ';'		#LinkDecBoth
 	|	'AssignAction' PSTART idpar ',' idpar PEND ';'					#AssignAct
 	|	'DeleteItem' PSTART idpar PEND ';'								#DelItem
 	;
@@ -16,7 +16,7 @@ fs	:	op=(SL2|SLB) PSTART idpar PEND ';'					#SetLink2B
 	|	op=(SE|SW) PSTART idpar ',' intpar PEND ';'				#SetVals
 	|	'MoveEntity' PSTART idpar ',' idpar PEND ';'					#MoveEnt
 	|	'SetLinkOneWay' PSTART idpar ',' idpar ',' idpar PEND ';'		#SetLink1W
-	|	'SetJunctDirection' PSTART idpar ',' idpar ',' dirpar PEND ';'	#SetJunctDir
+	|	'SetJunctDirection' PSTART idpar ',' idpar ',' idpar ',' dirpar=(DIRTWOW|DIRATOB|DIRBTOA|DIRBLOCKED) PEND ';'	#SetJunctDir
 	;
 
 qs	:	op=(FPN|FPL|FPJ|FPA|FPE) PSTART PEND ';'		 	#NoParamQuery
@@ -26,8 +26,6 @@ qs	:	op=(FPN|FPL|FPJ|FPA|FPE) PSTART PEND ';'		 	#NoParamQuery
 
 idpar	:	ID		#idparam ;
 intpar	:	INT		#intparam ;
-dirpar	:	ENUMDIR		#dirparam ;
-boolpar	:	BOOL		#boolparam ;
 
 SE	:	'SetEnergy';
 SW	:	'SetWeight';
@@ -59,10 +57,12 @@ F2E	:	'SharedActions';
 
 DEND	:	'DecEnd;' ;
 
+DIRTWOW	:	'TWOWAY';
+DIRATOB	:	'ATOB';
+DIRBTOA	:	'BTOA';
+DIRBLOCKED	:	'BLOCKED';
 ID	:	[A-Za-z] [A-Za-z0-9]* ;
 INT	:	[0-9]+ ;
-ENUMDIR	:	[0-3] ;
-BOOL	:	'true' | 'false' ;
 
 PSTART	:	'(' ;
 PEND	:	')' ;

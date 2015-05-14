@@ -146,7 +146,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 	{
 		super();
 		worldDict = _wd;
-		debug = true;
+		debug = false;
 	}
 //declaration statements
 	public Void visitSimpleDec(PathyParser.SimpleDecContext ctx)
@@ -389,7 +389,22 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		String aid = ctx.idpar(1).getText();
 		String bid = ctx.idpar(2).getText();
 		int weight = Integer.parseInt(ctx.intpar().getText());
-		LinkDir dir = LinkDir.values()[Integer.parseInt(ctx.dirpar().getText())];
+		LinkDir dir = null;
+		switch (ctx.dirpar.getType())
+		{
+		case PathyParser.DIRTWOW:
+			dir = LinkDir.TWOWAY;
+			break;
+		case PathyParser.DIRATOB:
+			dir = LinkDir.ATOB;
+			break;
+		case PathyParser.DIRBTOA:
+			dir = LinkDir.BTOA;
+			break;
+		case PathyParser.DIRBLOCKED:
+			dir = LinkDir.BLOCKED;
+			break;
+		}
 		if (!worldDict.containsKey(id))
 		{
 
@@ -494,7 +509,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		{
 			PathyPlace p = (PathyPlace)item;
 			
-			if (p.isConnected())
+			if (p.hasConnections())
 			{
 				//Throws: if [ID] is a Node or Junction, and is attached to one or more Links
 				throw new IllegalStateException("ERROR: \"" + id + "\" is an endpoint for one or more Links. Cannot remove \"" + id + "\" unless all Links are removed first."); 
@@ -733,6 +748,86 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 
 	public Void visitSetJunctDir(PathyParser.SetJunctDirContext ctx)
 	{
+		String jid = ctx.idpar(0).getText();
+		String aid = ctx.idpar(1).getText();
+		String bid = ctx.idpar(2).getText();
+		boolean isJunct= checkItemJunction(jid);
+		boolean isA = checkItemLink(aid);
+		boolean isB = checkItemLink(bid);
+		LinkDir dir = null;
+		switch (ctx.dirpar.getType())
+		{
+		case PathyParser.DIRTWOW:
+			dir = LinkDir.TWOWAY;
+			break;
+		case PathyParser.DIRATOB:
+			dir = LinkDir.ATOB;
+			break;
+		case PathyParser.DIRBTOA:
+			dir = LinkDir.BTOA;
+			break;
+		case PathyParser.DIRBLOCKED:
+			dir = LinkDir.BLOCKED;
+			break;
+		}
+		if (!isJunct && !isA && !isB)
+		{
+			throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, jid, "Junction", 0)
+					+ System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, aid, "Link", 1)
+					+ System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, bid, "Node or Junction", 2));
+		}
+		else if (!isJunct && !isA)
+		{
+			throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, jid, "Junction", 0)
+					+ System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, aid, "Link", 1));
+		}
+		else if (!isJunct && !isB)
+		{
+			throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, jid, "Junction", 0)
+					+ System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, bid, "Link", 2));
+		}
+		else if (!isA && !isB)
+		{
+			throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, aid, "Link", 1)
+					+ System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, bid, "Link", 2));
+		}
+		else if (!isJunct)
+		{
+			throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, jid, "Junction", 0));
+		}
+		else if (!isA)
+		{
+			throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, aid, "Link", 1));
+		}
+		else if (!isB)
+		{
+			throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, bid, "Link", 2));
+		}
+		
+		Link a = (Link)worldDict.get(aid);
+		Link b = (Link)worldDict.get(bid);
+		Junction j = (Junction)worldDict.get(jid);
+
+		if (a == b || a.equals(b))
+		{
+			throw new RuntimeException("ERROR: Links must not be identical");
+		}
+		
+		if (debug)
+		{
+			System.out.println(j.getConnections().toString());
+			System.out.println(a.toString());
+			System.out.println(b.toString());
+			System.out.println(a.equals(a));
+			System.out.println(b.equals(b));
+			System.out.println(a.equals(b));
+			System.out.println(a.hashCode());
+			System.out.println(b.hashCode());
+		}
+		
+		//the junction internal function will check if the links are actually connected or not.
+		j.setInternal(a, b, dir);
+				
 		return null;
 	}
 
@@ -898,9 +993,14 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 					for (int ita = 0; ita < noConns; ++ita)
 					{
 						a = connections.get(ita);
-						for (int itb = ita; itb < noConns; ++itb)
+						for (int itb = ita + 1; itb < noConns; ++itb)
 						{
 							b = connections.get(itb);
+							if (b.equals(a))
+							{
+								//a quick safeguard in case the same Link comes up twice somehow
+								continue;
+							}
 							LinkPair lp = new LinkPair(a,b);
 							if (!internals.containsKey(lp))
 							{

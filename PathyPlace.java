@@ -44,17 +44,20 @@ public abstract class PathyPlace extends PathyObject
 		return true;
 	}
 
-	protected void checkConnections(Link a, Link b) {
+	public void checkConnections(Link a, Link b) {
 		//if either link doesn't appear to be connected, throw
-		if (!connections.contains(a) && !connections.contains(b))
+		
+		boolean notConnA = !connections.contains(a);
+		boolean notConnB = !connections.contains(b);
+		if (notConnA && notConnB)
 		{
 			throw new RuntimeException("Error: \"" + this.id + "\" is not connected to Links called \"" + a.id + "\" or \"" + b.id + "\".");
 		}
-		else if (!connections.contains(a))
+		else if (notConnA)
 		{
 			throw new RuntimeException("Error: \"" + this.id + "\" is not connected to a Link called \"" + a.id + "\".");
 		}
-		else if (!connections.contains(b))
+		else if (notConnB)
 		{
 			throw new RuntimeException("Error: \"" + this.id + "\" is not connected to a Link called \"" + b.id + "\".");
 		}
@@ -75,8 +78,13 @@ public abstract class PathyPlace extends PathyObject
 		return connections.remove(l);
 	}
 	
-	public boolean isConnected()
+	public boolean hasConnections()
 	{
 		return !connections.isEmpty();
+	}
+	
+	public boolean isConnected(Link l)
+	{
+		return connections.contains(l);
 	}
 }

@@ -22,7 +22,7 @@ For calling them variables, they're not actually very mutable once declarations 
 
 Actions are unique in how they are declared and used. Actions are declared with a name and then copies of it are assigned to nodes. This is as close to object orientation as Pathy gets, but it's more re-use of a name than behaviour.
 
-Pathy accepts Strings, Numbers and Booleans as parameters, but cannot store them in their own variables. This is due to the fact that it's not expected that large sweeping changes would be required in this language. Anything that would require that functionality should be within the scope of a text editor's standard find and replace functionality.
+Pathy accepts Strings and Numbersas parameters, but cannot store them in their own variables. This is due to the fact that it's not expected that large sweeping changes would be required in this language. Anything that would require that functionality should be within the scope of a text editor's standard find and replace functionality.
 
 "Assignment" is not a concept past declaring an instance exists with specific properties and has a name in the world. Once set it cannot be overwritten with anything else. In order to use that name for something else, the instance a name refers to must be deleted and then that name declared to be something else.
 

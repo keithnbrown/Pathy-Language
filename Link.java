@@ -31,10 +31,10 @@ public class Link extends PathyObject
 		checkNotNull(_a,_b);
 		a = _a;
 		b = _b;
-		_a.addConnection(this);
-		_b.addConnection(this);
 		weight = 0;
 		direction = LinkDir.TWOWAY;
+		_a.addConnection(this);
+		_b.addConnection(this);
 	}
 
 	public Link(String _id, PathyPlace _a, PathyPlace _b, int _w)
@@ -43,10 +43,10 @@ public class Link extends PathyObject
 		checkNotNull(_a,_b);
 		a = _a;
 		b = _b;
-		_a.addConnection(this);
-		_b.addConnection(this);
 		weight = _w;
 		direction = LinkDir.TWOWAY;
+		_a.addConnection(this);
+		_b.addConnection(this);
 	}
 
 	public Link(String _id, PathyPlace _a, PathyPlace _b, int _w, LinkDir _d)
@@ -55,10 +55,10 @@ public class Link extends PathyObject
 		checkNotNull(_a,_b);
 		a = _a;
 		b = _b;
-		_a.addConnection(this);
-		_b.addConnection(this);
 		weight = _w;
 		direction = _d;
+		_a.addConnection(this);
+		_b.addConnection(this);
 	}
 
 	public PathyPlace getA()
@@ -109,6 +109,7 @@ public class Link extends PathyObject
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
+		
 		result = prime * result + ((a == null) ? 0 : a.hashCode());
 		result = prime * result + ((b == null) ? 0 : b.hashCode());
 		result = prime * result
