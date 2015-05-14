@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
@@ -10,7 +9,6 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 {
 	boolean debug;
 	HashMap<String, PathyObject> worldDict;
-	Deque<StackElement> stack;
 
 	private boolean checkItemNode(String id)
 	{
@@ -1110,9 +1108,10 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		//PathTo
 			if (isNode1 && isNode2)
 			{
-				Node nodeA = (Node)worldDict.get(par1);
-				Node nodeB = (Node)worldDict.get(par2);
+				//Node nodeA = (Node)worldDict.get(par1);
+				//Node nodeB = (Node)worldDict.get(par2);
 				//TODO: Path Finding Algorithm
+				System.out.println("ERROR: Not implemented in this version of Pathy");
 			}
 			else if (!isNode1 && !isNode2)
 			{
@@ -1131,9 +1130,10 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		//CanMove
 			if (isEntity1 && isNode2)
 			{
-				Entity nodeA = (Entity)worldDict.get(par1);
-				Node nodeB = (Node)worldDict.get(par2);
+				//Entity nodeA = (Entity)worldDict.get(par1);
+				//Node nodeB = (Node)worldDict.get(par2);
 				//TODO: Path Finding Algorithm
+				System.out.println("ERROR: Not implemented in this version of Pathy");
 			}
 			else if (!isEntity1 && !isNode2)
 			{
@@ -1152,9 +1152,10 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		//CanMoveWhy
 			if (isEntity1 && isNode2)
 			{
-				Entity nodeA = (Entity)worldDict.get(par1);
-				Node nodeB = (Node)worldDict.get(par2);
+				//Entity nodeA = (Entity)worldDict.get(par1);
+				//Node nodeB = (Node)worldDict.get(par2);
 				//TODO: Path Finding Algorithm
+				System.out.println("ERROR: Not implemented in this version of Pathy");
 			}
 			else if (!isEntity1 && !isNode2)
 			{
@@ -1173,9 +1174,10 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		//EnergyReq
 			if (isNode1 && isNode2)
 			{
-				Node nodeA = (Node)worldDict.get(par1);
-				Node nodeB = (Node)worldDict.get(par2);
+				//Node nodeA = (Node)worldDict.get(par1);
+				//Node nodeB = (Node)worldDict.get(par2);
 				//TODO: Path Finding Algorithm
+				System.out.println("ERROR: Not implemented in this version of Pathy");
 			}
 			else if (!isNode1 && !isNode2)
 			{

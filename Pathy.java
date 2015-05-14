@@ -3,7 +3,6 @@ import org.antlr.v4.runtime.tree.*;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-import java.util.Deque;
 import java.util.HashMap;
 
 public class Pathy {
@@ -25,7 +24,6 @@ public class Pathy {
         System.out.println(tree.toStringTree(parser));
 
 	HashMap<String, PathyObject> worldDict = new HashMap<String, PathyObject>();
-	//Deque<StackElement> stack;
 
 	PathTreeVisitor eval = new PathTreeVisitor(worldDict);
 	//System.out.println(eval.visit(tree));
