@@ -15,12 +15,12 @@ Node declaration
 Junction declaration
 [ID] - An unused string identifier
 
-^[ID]([A], [B], [Weight], [Direction])
+^[ID]([A], [B], {Weight}, {Direction})
 Link Declaration
 [ID] - An unused string identifier
 [A], [B] - string identifiers of nodes or junctions on either end of the link
-[Weight] - Optional, Default 0 - An Integer amount of energy required for an entity to use this link.
-[Direction] - Directional assignment. An string from the following:
+{Weight} - Optional, Default 0 - An Integer amount of energy required for an entity to use this link.
+{Direction} - Optional, Default TWOWAY, Directional assignment. An integer from the following:
 TWOWAY = Allows travel both ways.
 ATOB = Allows travel from A to B only.
 BTOA = Allows travel from B to A only.
@@ -100,7 +100,6 @@ ATOB = Allows travel from A to B only.
 BTOA = Allows travel from B to A only.
 BLOCKED = Blocked. No travel permitted.
 Throws: if [Jucntion], [A] or [B] does not exist, or [A] and/or [B] are not connected to [Junction]
-
 
 
 ----------------

@@ -19,7 +19,7 @@ public class Node extends PathyPlace
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result
-				+ ((activities == null) ? 0 : activities.hashCode());
+				+ ((activities == null) ? 0 : 7);
 		return result;
 	}
 

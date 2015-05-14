@@ -7,6 +7,7 @@ ds	:	op=(NODE|JUNCT|ACT) idpar PSTART PEND ';'					#SimpleDec
 	|	ENT idpar PSTART idpar ',' intpar PEND ';'					#EntDecEnergy
 	|	LINK idpar PSTART idpar ',' idpar PEND ';'					#LinkDecDef
 	|	LINK idpar PSTART idpar ',' idpar ',' intpar PEND ';'				#LinkDecWeight
+	|	LINK idpar PSTART idpar ',' idpar ',' dirpar=(DIRTWOW|DIRATOB|DIRBTOA|DIRBLOCKED) PEND ';'		#LinkDecDir
 	|	LINK idpar PSTART idpar ',' idpar ',' intpar ',' dirpar=(DIRTWOW|DIRATOB|DIRBTOA|DIRBLOCKED) PEND ';'		#LinkDecBoth
 	|	'AssignAction' PSTART idpar ',' idpar PEND ';'					#AssignAct
 	|	'DeleteItem' PSTART idpar PEND ';'								#DelItem

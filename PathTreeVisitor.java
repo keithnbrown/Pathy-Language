@@ -383,6 +383,85 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		return null;
 	}
 
+	public Void visitLinkDecDir(PathyParser.LinkDecDirContext ctx)
+	{
+		String id = ctx.idpar(0).getText();
+		String aid = ctx.idpar(1).getText();
+		String bid = ctx.idpar(2).getText();
+		LinkDir dir = null;
+		switch (ctx.dirpar.getType())
+		{
+		case PathyParser.DIRTWOW:
+			dir = LinkDir.TWOWAY;
+			break;
+		case PathyParser.DIRATOB:
+			dir = LinkDir.ATOB;
+			break;
+		case PathyParser.DIRBTOA:
+			dir = LinkDir.BTOA;
+			break;
+		case PathyParser.DIRBLOCKED:
+			dir = LinkDir.BLOCKED;
+			break;
+		}
+		if (!worldDict.containsKey(id))
+		{
+
+			PathyPlace placeA;
+			PathyPlace placeB;
+			boolean aCheck = checkItemPlace(aid);
+			boolean bCheck = checkItemPlace(bid);
+			//check if the parameters provided exist and are a nodes or junctions
+			//there are a few checks due to Links taking different types for the same parameter signature
+			if (!aCheck && !bCheck)
+			{
+				//Both parameters are invalid
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, aid, "Node or Junction", 0)
+						+ System.lineSeparator() + generateFeedback(ErrorType.IDNOTVALID, bid, "Node or Junction", 1));
+			}
+			
+			if ((aCheck))
+			{
+				//parameter 0 is valid
+				placeA = (PathyPlace)worldDict.get(aid);
+			}
+			else
+			{
+				//parameter 0 is invalid
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, aid, "Node or Junction", 0));
+			}
+
+			if ((bCheck))
+			{
+				//parameter 1 is valid
+				placeB = (PathyPlace)worldDict.get(bid);
+			}
+			else
+			{
+				//parameter 1 is invalid
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, bid, "Node or Junction", 1));
+			}
+			Link newLink = new Link(id, placeA, placeB, 0, dir);
+
+			worldDict.put(id, newLink);
+
+		}
+		else
+		{
+			//user tried to reuse a name
+			throw new IllegalStateException(generateFeedback(ErrorType.IDCONFLICT,id, null, 0)); 
+		}
+
+		if (debug)
+		{
+			System.out.println(id);
+			System.out.println(worldDict.get(id).toString());
+			System.out.println();
+			System.out.println(worldDict);
+		}
+		return null;
+	}
+	
 	public Void visitLinkDecBoth(PathyParser.LinkDecBothContext ctx)
 	{
 		String id = ctx.idpar(0).getText();
@@ -668,7 +747,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		String lid = ctx.idpar(0).getText();
 		String aid = ctx.idpar(1).getText();
 		String bid = ctx.idpar(2).getText();
-		boolean islink = checkItemEntity(lid);
+		boolean islink = checkItemLink(lid);
 		boolean isA = checkItemPlace(aid);
 		boolean isB = checkItemPlace(bid);
 		if (!islink && !isA && !isB)
@@ -712,8 +791,10 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		Link l = (Link)worldDict.get(lid);
 		PathyPlace a = (PathyPlace)worldDict.get(aid);
 		PathyPlace b = (PathyPlace)worldDict.get(bid);
-
-		if (l.isEndpoint(a) && l.isEndpoint(b))
+		boolean endA = l.isEndpoint(a);
+		boolean endB = l.isEndpoint(b);
+		
+		if (endA && endB)
 		{
 			//all checks out lets do it now
 			if (a == l.getA())
@@ -727,12 +808,12 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		}
 		else
 		{
-			if (!l.isEndpoint(a) && !l.isEndpoint(b))
+			if (!endA && !endB)
 			{
 				//both weren't endpoints
 				throw new RuntimeException("ERROR: The supplied endpoints, \"" + aid + "\"and \""+ bid +"\", were not found at either end of \""+ lid +"\".");
 			}
-			else if (!l.isEndpoint(a))
+			else if (!endA)
 			{
 				//a wasn't an endpoint
 				throw new RuntimeException("ERROR: The supplied endpoint, \"" + aid + "\", was not found at either end of \""+ lid +"\". PARAM 1");
@@ -1068,10 +1149,25 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			{
 				PathyPlace p = (PathyPlace)worldDict.get(id);
 				HashSet<Link> conns = p.getConnections();
-
+				HashSet<PathyPlace> dest = new HashSet<PathyPlace>();
+				
+				for(Link l : conns)
+				{
+					//divine which end the node is on then log the other
+					//this is done to stop duplicate printouts in the case of double linking
+					if (l.getA() == p)
+					{
+						dest.add(l.getB());
+					}
+					else
+					{
+						dest.add(l.getA());
+					}
+				}
+				
 				System.out.print("{");
 				boolean first = true;
-				for(Link l : conns)
+				for(PathyPlace pl : dest)
 				{
 					if (first)
 					{
@@ -1081,15 +1177,7 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 					{
 						System.out.print(",");
 					}
-					//divine which end the node is on then print the other
-					if (l.getA() == p)
-					{
-						System.out.print(l.getB().getID());
-					}
-					else
-					{
-						System.out.print(l.getA().getID());
-					}
+					System.out.print(pl.getID());
 				}
 				System.out.println("}");
 			}
