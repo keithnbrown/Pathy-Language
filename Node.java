@@ -57,4 +57,9 @@ public class Node extends PathyPlace
 	{
 		return activities;
 	}
+	
+	public boolean Available(Action a)
+	{
+		return activities.contains(a);
+	}
 }

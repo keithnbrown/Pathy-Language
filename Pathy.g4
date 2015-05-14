@@ -20,7 +20,7 @@ fs	:	op=(SL2|SLB) PSTART idpar PEND ';'					#SetLink2B
 	;
 
 qs	:	op=(FPN|FPL|FPJ|FPA|FPE) PSTART PEND ';'		 	#NoParamQuery
-	|	op=(F1L|F1D|F1W|F1A|F1C|F1I|F1T|F1B) PSTART idpar PEND ';'		#OneParamQuery
+	|	op=(F1L|F1D|F1W|F1A|F1C|F1I|F1T|F1B|F1V) PSTART idpar PEND ';'		#OneParamQuery
 	|	op=(F2A|F2B|F2C|F2D|F2E) PSTART idpar ',' idpar PEND ';'		#TwoParamQuery
 	;
 
@@ -49,6 +49,7 @@ F1I	:	'WhereIs';
 F1T	:	'LinkedTo';
 F1B	:	'ConnectedBy';
 F1O	:	'TypeOf';
+F1V	:	'Availability';
 
 F2A	:	'PathTo';
 F2B	:	'CanMove';

@@ -1028,6 +1028,42 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, id, "Node", 0));
 			}
 			break;
+		case PathyParser.F1V:
+			//Availability
+			if (checkItemAction(id))
+			{
+				Action a = (Action)worldDict.get(id);
+				HashSet<Node> nodes = getNodes();
+				HashSet<Node> avail = new HashSet<Node>();
+				for (Node n : nodes)
+				{
+					if (n.Available(a))
+					{
+						avail.add(n);
+					}
+				}
+				
+				System.out.print("{");
+				boolean first = true;
+				for(Node n : avail)
+				{
+					if (first)
+					{
+						first = false;
+					}
+					else
+					{
+						System.out.print(",");
+					}
+					System.out.print(n.getID());
+				}
+				System.out.println("}");
+			}
+			else
+			{
+				throw new RuntimeException(generateFeedback(ErrorType.IDNOTVALID, id, "Action", 0));
+			}
+			break;
 		case PathyParser.F1O:
 			//TypeOf
 			if (worldDict.containsKey(id))
