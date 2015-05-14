@@ -19,8 +19,8 @@ Junction declaration
 Link Declaration
 [ID] - An unused string identifier
 [A], [B] - string identifiers of nodes or junctions on either end of the link
-{Weight} - Optional, Default 0 - An Integer amount of energy required for an entity to use this link.
-{Direction} - Optional, Default TWOWAY, Directional assignment. An integer from the following:
+{Weight} - Optional, Default 0 - An Integer amount of energy required for an entity to use this link. If {Weight} is negative, it is turned positive.
+{Direction} - Optional, Default TWOWAY, Directional assignment. An string value from the following:
 TWOWAY = Allows travel both ways.
 ATOB = Allows travel from A to B only.
 BTOA = Allows travel from B to A only.
@@ -30,9 +30,10 @@ $[ID]()
 Action declaration
 [ID] - An unused string identifier
 
-£[ID]([Start]) 
+£[ID]([Start],{Energy}) 
 [ID] - An unused string identifier
 [Start] - The Node that the Entity starts on. 
+{Energy} - Optional, Default 0, An integer amount of energy initially given to the Entity. If {Energy} is negative, it is turned positive.
 
 AssignAction([Action],[Node])
 Assigns an action to a node to show that it is available at that node. If an action has not had this called on them, then it will simply exist, but no nodes will report they can provide it.
@@ -59,7 +60,7 @@ The following can come before or after a "DecEnd" statement
 SetWeight([ID], [Val]) 
 Sets the weight of [ID] to be [Val]
 [ID] - A string identifier of an existing Link
-[Val] - An integer value
+[Val] - An integer value. If [Val] is negative, it is turned positive.
 
 SetLinkOneWay([ID], [A], [B])
 Restricts directional travel along [ID] so that it may only be passed going towards [Dest]
@@ -85,7 +86,13 @@ Changes the location of [Entity] to [Node] without respect to its energy or if i
 Throws: if [Entity] or [Node] doesn't exist
 
 SetEnergy([ID], [Val]) 
-Sets the energy of [ID] to be [Val]
+Sets the energy of [ID] to be [Val].
+[ID] - A string identifier of an existing Entity
+[Val] - An integer value. If [Val] is negative, it is turned positive.
+Throws: if [ID] doesn't exist 
+
+ModEnergy([ID], [Val]) 
+Modifies the energy of [ID] by [Val]. Positive raises energy, Negative lowers it.
 [ID] - A string identifier of an existing Entity
 [Val] - An integer value 
 Throws: if [ID] doesn't exist
@@ -155,6 +162,10 @@ Lists the internal direction allowances for [Junct].
 
 WhereIs([Entity])
 Returns the Node that [Entity] is located at
+[Entity] - A string identifier of an existing Entity
+
+EnergyLevel([Entity])
+Returns the amount of energy remaining in [Entity]
 [Entity] - A string identifier of an existing Entity
 
 Availability([Action])

@@ -1,0 +1,10 @@
+@Node1();
+@Node2();
+@Node3();
+^Linking(Node1, Node2);
+DecEnd;
+PrintNodes();
+PrintLinks();
+PrintJunctions();
+Links(Linking);
+

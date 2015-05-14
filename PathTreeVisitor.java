@@ -7,7 +7,6 @@ import java.util.Set;
 
 public class PathTreeVisitor extends PathyBaseVisitor<Void>
 {
-	boolean debug;
 	HashMap<String, PathyObject> worldDict;
 
 	private boolean checkItemNode(String id)
@@ -146,7 +145,6 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 	{
 		super();
 		worldDict = _wd;
-		debug = false;
 	}
 //declaration statements
 	public Void visitSimpleDec(PathyParser.SimpleDecContext ctx)
@@ -176,13 +174,6 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			throw new IllegalStateException(generateFeedback(ErrorType.IDCONFLICT,id, null, 0)); 
 		}
 
-		if (debug)
-		{
-			System.out.println(id);
-			System.out.println(worldDict.get(id).toString());
-			System.out.println();
-			System.out.println(worldDict);
-		}
 		return null;
 	}
 
@@ -212,13 +203,6 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			throw new IllegalStateException(generateFeedback(ErrorType.IDCONFLICT,id, null, 0)); 
 		}
 
-		if (debug)
-		{
-			System.out.println(id);
-			System.out.println(worldDict.get(id).toString());
-			System.out.println();
-			System.out.println(worldDict);
-		}
 		return null;
 	}
 
@@ -253,13 +237,6 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			throw new IllegalStateException(generateFeedback(ErrorType.IDCONFLICT, id, null, 0)); 
 		}
 
-		if (debug)
-		{
-			System.out.println(id);
-			System.out.println(worldDict.get(id).toString());
-			System.out.println();
-			System.out.println(worldDict);
-		}
 		return null;
 	}
 
@@ -313,13 +290,6 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			throw new IllegalStateException(generateFeedback(ErrorType.IDCONFLICT,id, null, 0)); 
 		}
 
-		if (debug)
-		{
-			System.out.println(id);
-			System.out.println(worldDict.get(id).toString());
-			System.out.println();
-			System.out.println(worldDict);
-		}
 		return null;
 	}
 
@@ -384,13 +354,6 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			throw new IllegalStateException(generateFeedback(ErrorType.IDCONFLICT,id, null, 0)); 
 		}
 
-		if (debug)
-		{
-			System.out.println(id);
-			System.out.println(worldDict.get(id).toString());
-			System.out.println();
-			System.out.println(worldDict);
-		}
 		return null;
 	}
 
@@ -463,13 +426,6 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			throw new IllegalStateException(generateFeedback(ErrorType.IDCONFLICT,id, null, 0)); 
 		}
 
-		if (debug)
-		{
-			System.out.println(id);
-			System.out.println(worldDict.get(id).toString());
-			System.out.println();
-			System.out.println(worldDict);
-		}
 		return null;
 	}
 	
@@ -550,13 +506,6 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 			throw new IllegalStateException(generateFeedback(ErrorType.IDCONFLICT,id, null, 0)); 
 		}
 
-		if (debug)
-		{
-			System.out.println(id);
-			System.out.println(worldDict.get(id).toString());
-			System.out.println();
-			System.out.println(worldDict);
-		}
 		return null;
 	}
 
@@ -922,18 +871,6 @@ public class PathTreeVisitor extends PathyBaseVisitor<Void>
 		if (a == b || a.equals(b))
 		{
 			throw new RuntimeException("ERROR: Links must not be identical");
-		}
-		
-		if (debug)
-		{
-			System.out.println(j.getConnections().toString());
-			System.out.println(a.toString());
-			System.out.println(b.toString());
-			System.out.println(a.equals(a));
-			System.out.println(b.equals(b));
-			System.out.println(a.equals(b));
-			System.out.println(a.hashCode());
-			System.out.println(b.hashCode());
 		}
 		
 		//the junction internal function will check if the links are actually connected or not.

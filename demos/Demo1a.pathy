@@ -1,0 +1,14 @@
+@Node1();
+@Node2();
+@Node3();
+@Node4();
+^Linking(Node1, Node2);
+^Linking2(Node3, Node4);
+DeleteItem(Linking2);
+DeleteItem(Node4);
+DecEnd;
+PrintNodes();
+PrintLinks();
+PrintJunctions();
+Links(Linking);
+

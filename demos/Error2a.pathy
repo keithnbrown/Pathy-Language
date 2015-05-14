@@ -1,0 +1,40 @@
+@Node1();
+@Node2();
+@Node3();
+^Link1(Node1, Node2);
+^Link2(Node2, Node3, 2, ATOB);
+^Link3(Node1, Node3, 4);
+^Link4(Node2, Node3, BLOCKED);
+DecEnd;
+
+PrintNodes();
+PrintLinks();
+
+Links(Link1);
+Links(Link2);
+Links(Link3);
+Links(Link4);
+
+ConnectedBy(Node3);
+LinkedTo(Node3);
+
+Direction(Link1);
+SetLinkBlocked(Link1);
+Direction(Link1);
+Direction(Link2);
+SetLinkTwoWay(Link2);
+Direction(Link2);
+Direction(Link3);
+SetLinkOneWay(Link3,Node2,Node3);
+Direction(Link3);
+Direction(Link4);
+SetLinkOneWay(Link4,Node3,Node2);
+Direction(Link4);
+
+Weight(Link1);
+Weight(Link2);
+SetWeight(Link2, 5);
+Weight(Link2);
+Weight(Link3);
+Weight(Link4);
+

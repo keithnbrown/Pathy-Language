@@ -1,0 +1,46 @@
+@Node1();
+@Node2();
+^Link1(Node1,Node2);
+@Node3();
+@Node4();
+%Junct1();
+^Link2(Node1,Junct1);
+^Link3(Junct1,Node3,1,TWOWAY);
+^Link4(Junct1,Node4,1,BTOA);
+£Ent1(Node1);
+£Ent2(Node4, 30);
+$Act1();
+$Act2();
+$Act3();
+AssignAction(Act1, Node1);
+AssignAction(Act2, Node2);
+AssignAction(Act3, Node3);
+AssignAction(Act3, Node4);
+AssignAction(Act3, Node1);
+
+DecEnd;
+
+PrintNodes();
+PrintLinks();
+PrintJunctions();
+PrintActions();
+PrintEntities();
+
+Availability(Act3);
+ActionsThere(Node1);
+SharedActions(Node2,Node1);
+
+WhereIs(Ent1);
+WhereIs(Ent2);
+MoveEntity(Ent2,Node2);
+WhereIs(Ent2);
+
+EnergyLevel(Ent1);
+EnergyLevel(Ent2);
+SetEnergy(Ent2,20);
+EnergyLevel(Ent2);
+ModEnergy(Ent2,+5);
+EnergyLevel(Ent2);
+ModEnergy(Ent2,-10);
+EnergyLevel(Ent2);
+
