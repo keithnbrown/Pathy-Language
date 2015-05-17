@@ -64,7 +64,7 @@ DIRTWOW	:	'TWOWAY';
 DIRATOB	:	'ATOB';
 DIRBTOA	:	'BTOA';
 DIRBLOCKED	:	'BLOCKED';
-ID	:	[A-Za-z] [A-Za-z0-9]* ;
+ID	:	[A-Za-z_] [A-Za-z0-9_]* ;
 INT	:	[\+\-]*[0-9]+ ;
 
 PSTART	:	'(' ;
